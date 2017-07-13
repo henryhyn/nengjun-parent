@@ -23,8 +23,8 @@ public class HomeController {
     }
 
     @GetMapping("/say")
-    public Result<String> say(@RequestParam(value = "id", required = false, defaultValue = "0") Integer myId) {
-        Validate.idValid(myId);
+    public Result<String> say(@RequestParam(value = "id", required = false) Integer myId) {
+        Validate.idValid("id", myId);
         return new ResultUtil<String>().success(String.format("id: %d", myId));
     }
 }
