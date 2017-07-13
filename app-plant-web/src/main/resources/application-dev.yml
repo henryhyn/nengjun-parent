@@ -1,2 +1,8 @@
 globalSetting:
   env: dev
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/plant_dev
+    username: root
+    password: mysql
