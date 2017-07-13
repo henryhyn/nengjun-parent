@@ -13,4 +13,11 @@ public class ResultUtil<T> {
         res.setData(data);
         return res;
     }
+
+    public static Result<String> error(Integer code, String message) {
+        Result<String> res = new Result<String>();
+        res.setCode(code);
+        res.setMessage(message);
+        return res;
+    }
 }
