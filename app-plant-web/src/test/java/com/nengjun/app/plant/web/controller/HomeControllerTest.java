@@ -1,18 +1,18 @@
 package com.nengjun.app.plant.web.controller;
 
-import com.nengjun.AbstractTest;
+import com.nengjun.AbstractMvcTest;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 /**
  * Created by Henry on 2017/7/13.
  */
-public class HomeControllerTest extends AbstractTest {
-    @Autowired
-    private HomeController homeController;
-
+public class HomeControllerTest extends AbstractMvcTest {
     @Test
-    public void testHome() {
-        System.out.println(homeController.home());
+    public void testHome() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.get("/"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string("env: dev"));
     }
 }
