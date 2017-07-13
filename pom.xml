@@ -15,6 +15,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>avatar-interface</module>
+        <module>avatar-mybatis</module>
         <module>app-plant-web</module>
         <module>app-plant-dao</module>
     </modules>
