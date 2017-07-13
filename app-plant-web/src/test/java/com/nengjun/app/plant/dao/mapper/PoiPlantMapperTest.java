@@ -1,6 +1,8 @@
 package com.nengjun.app.plant.dao.mapper;
 
 import com.nengjun.AbstractTest;
+import com.nengjun.app.plant.dao.entity.PoiPlant;
+import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -13,6 +15,7 @@ public class PoiPlantMapperTest extends AbstractTest {
 
     @Test
     public void test1() {
-        System.out.println(poiPlantMapper.findById(1));
+        PoiPlant plant = poiPlantMapper.findById(1);
+        Assert.assertEquals("玫瑰花", plant.getName());
     }
 }

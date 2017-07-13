@@ -13,6 +13,6 @@ public class HomeControllerTest extends AbstractMvcTest {
     public void testHome() throws Exception {
         mvc.perform(MockMvcRequestBuilders.get("/"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().string("{\"code\":0,\"message\":\"成功!\",\"data\":\"env: dev\"}"));
+                .andExpect(MockMvcResultMatchers.content().json("{\"code\":0,\"message\":\"成功!\",\"data\":\"env: dev\"}"));
     }
 }
