@@ -2,7 +2,6 @@ package com.nengjun.app.plant.dao.mapper;
 
 import com.nengjun.app.plant.dao.entity.PoiPlant;
 import org.apache.ibatis.annotations.*;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
