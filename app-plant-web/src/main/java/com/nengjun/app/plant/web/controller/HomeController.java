@@ -18,13 +18,13 @@ public class HomeController {
     private GlobalSetting globalSetting;
 
     @GetMapping("/")
-    public Result<String> home() {
-        return new ResultUtil<String>().success(String.format("env: %s", globalSetting.getEnv()));
+    public Result home() {
+        return ResultUtil.success(String.format("env: %s", globalSetting.getEnv()));
     }
 
     @GetMapping("/say")
-    public Result<String> say(@RequestParam(value = "id", required = false) Integer myId) {
+    public Result say(@RequestParam(value = "id", required = false) Integer myId) {
         Validate.idValid("id", myId);
-        return new ResultUtil<String>().success(String.format("id: %d", myId));
+        return ResultUtil.success(String.format("id: %d", myId));
     }
 }
