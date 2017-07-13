@@ -7,3 +7,5 @@ spring:
     username: root
     password: mysql
     schema: classpath:import.sql
+mybatis:
+  config: classpath:mybatis-config.xml
