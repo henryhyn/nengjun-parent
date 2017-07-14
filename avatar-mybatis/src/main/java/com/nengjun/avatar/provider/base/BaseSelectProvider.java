@@ -1,6 +1,7 @@
 package com.nengjun.avatar.provider.base;
 
 import com.nengjun.avatar.helper.MapperTemplate;
+import com.nengjun.avatar.utils.lang.StringUtil;
 import org.apache.ibatis.jdbc.SQL;
 
 /**
@@ -10,7 +11,7 @@ public class BaseSelectProvider extends MapperTemplate {
     public String selectByPrimaryKey() {
         return new SQL() {{
             SELECT("*");
-            FROM("poi_plant");
+            FROM(StringUtil.camelhumpToUnderline("PoiPlant").toLowerCase());
             WHERE("id = #{id}");
         }}.toString();
     }
@@ -18,7 +19,7 @@ public class BaseSelectProvider extends MapperTemplate {
     public String selectAll() {
         return new SQL() {{
             SELECT("*");
-            FROM("poi_plant");
+            FROM(StringUtil.camelhumpToUnderline("PoiPlant").toLowerCase());
         }}.toString();
     }
 }
