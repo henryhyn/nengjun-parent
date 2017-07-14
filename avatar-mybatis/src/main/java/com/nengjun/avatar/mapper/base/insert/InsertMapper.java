@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Param;
 /**
  * Created by Henry on 2017/7/13.
  */
-public interface InsertMapper<T> {
+public interface InsertMapper<T, PK> {
     @InsertProvider(type = BaseInsertProvider.class, method = "insert")
     int insert(@Param("record") T record);
 }

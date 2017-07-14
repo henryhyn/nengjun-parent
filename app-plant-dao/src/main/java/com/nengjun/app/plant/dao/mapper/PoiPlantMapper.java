@@ -8,5 +8,5 @@ import org.apache.ibatis.annotations.Mapper;
  * Created by Henry on 2017/7/13.
  */
 @Mapper
-public interface PoiPlantMapper extends SqlMapper<PoiPlant> {
+public interface PoiPlantMapper extends SqlMapper<PoiPlant, Integer> {
 }

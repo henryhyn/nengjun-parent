@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Param;
 /**
  * Created by Henry on 2017/7/13.
  */
-public interface DeleteByPrimaryKeyMapper<T> {
+public interface DeleteByPrimaryKeyMapper<T, PK> {
     @DeleteProvider(type = BaseDeleteProvider.class, method = "deleteByPrimaryKey")
-    int deleteByPrimaryKey(@Param("key") Object key);
+    int deleteByPrimaryKey(@Param("id") PK id);
 }
