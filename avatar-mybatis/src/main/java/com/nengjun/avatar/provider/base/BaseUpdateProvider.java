@@ -1,14 +1,17 @@
 package com.nengjun.avatar.provider.base;
 
 import com.nengjun.avatar.helper.MapperTemplate;
-
-import java.util.Map;
+import org.apache.ibatis.jdbc.SQL;
 
 /**
  * Created by Henry on 2017/7/13.
  */
 public class BaseUpdateProvider extends MapperTemplate {
-    public String updateByPrimaryKey(Map<String, Object> params) {
-        return String.format("update poi_plant set name = '%s' where id = %d", "月季", 2);
+    public String updateByPrimaryKey() {
+        return new SQL() {{
+            UPDATE("poi_plant");
+            SET("name = #{name}");
+            WHERE("id = #{id}");
+        }}.toString();
     }
 }

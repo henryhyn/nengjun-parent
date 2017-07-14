@@ -2,7 +2,6 @@ package com.nengjun.avatar.mapper.base.update;
 
 import com.nengjun.avatar.provider.base.BaseUpdateProvider;
 import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.UpdateProvider;
 
 /**
@@ -11,5 +10,5 @@ import org.apache.ibatis.annotations.UpdateProvider;
 public interface UpdateByPrimaryKeyMapper<T, PK> {
     @UpdateProvider(type = BaseUpdateProvider.class, method = "updateByPrimaryKey")
     @Options(useCache = false, useGeneratedKeys = false)
-    int updateByPrimaryKey(@Param("record") T record);
+    int updateByPrimaryKey(T record);
 }

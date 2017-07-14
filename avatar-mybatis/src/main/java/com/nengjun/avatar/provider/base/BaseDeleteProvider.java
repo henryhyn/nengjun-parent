@@ -1,14 +1,16 @@
 package com.nengjun.avatar.provider.base;
 
 import com.nengjun.avatar.helper.MapperTemplate;
-
-import java.util.Map;
+import org.apache.ibatis.jdbc.SQL;
 
 /**
  * Created by Henry on 2017/7/13.
  */
 public class BaseDeleteProvider extends MapperTemplate {
-    public String deleteByPrimaryKey(Map<String, Object> params) {
-        return String.format("delete from poi_plant where id = %s", params.get("param1"));
+    public String deleteByPrimaryKey() {
+        return new SQL() {{
+            DELETE_FROM("poi_plant");
+            WHERE("id = #{id}");
+        }}.toString();
     }
 }
