@@ -2,11 +2,6 @@ package com.nengjun.app.plant.web.config;
 
 import com.nengjun.avatar.helper.MapperHelper;
 import com.nengjun.avatar.mapper.SqlMapper;
-import com.nengjun.avatar.mapper.base.delete.DeleteByPrimaryKeyMapper;
-import com.nengjun.avatar.mapper.base.insert.InsertMapper;
-import com.nengjun.avatar.mapper.base.select.SelectAllMapper;
-import com.nengjun.avatar.mapper.base.select.SelectByPrimaryKeyMapper;
-import com.nengjun.avatar.mapper.base.update.UpdateByPrimaryKeyMapper;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -30,16 +25,8 @@ public class MapperConfiguration {
     public void addMapperInterceptor() {
         MapperHelper mapperHelper = new MapperHelper();
         //提前初始化MapperFactoryBean,注册mappedStatements
-        applicationContext.getBeansOfType(SelectByPrimaryKeyMapper.class);
-        applicationContext.getBeansOfType(SelectAllMapper.class);
-        applicationContext.getBeansOfType(InsertMapper.class);
-        applicationContext.getBeansOfType(UpdateByPrimaryKeyMapper.class);
-        applicationContext.getBeansOfType(DeleteByPrimaryKeyMapper.class);
-        mapperHelper.registerMapper(SelectByPrimaryKeyMapper.class);
-        mapperHelper.registerMapper(SelectAllMapper.class);
-        mapperHelper.registerMapper(InsertMapper.class);
-        mapperHelper.registerMapper(UpdateByPrimaryKeyMapper.class);
-        mapperHelper.registerMapper(DeleteByPrimaryKeyMapper.class);
+        applicationContext.getBeansOfType(SqlMapper.class);
+        mapperHelper.registerMapper(SqlMapper.class);
         for (SqlSessionFactory sqlSessionFactory : sqlSessionFactoryList) {
             mapperHelper.processConfiguration(sqlSessionFactory.getConfiguration());
         }

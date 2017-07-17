@@ -1,6 +1,7 @@
 package com.nengjun.avatar.helper;
 
 import com.nengjun.avatar.exception.HexException;
+import com.nengjun.avatar.provider.EmptyProvider;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.annotations.DeleteProvider;
 import org.apache.ibatis.annotations.InsertProvider;
@@ -92,7 +93,10 @@ public class MapperHelper {
                 throw new HexException(1000, "一个通用Mapper中只允许存在一个MapperTemplate子类!");
             }
         }
-        MapperTemplate mapperTemplate;
+        if (templateClass == null || !MapperTemplate.class.isAssignableFrom(templateClass)) {
+            templateClass = EmptyProvider.class;
+        }
+        MapperTemplate mapperTemplate = null;
         try {
             mapperTemplate = (MapperTemplate) templateClass.getConstructor(Class.class, MapperHelper.class).newInstance(mapperClass, this);
         } catch (Exception e) {

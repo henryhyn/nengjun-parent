@@ -1,5 +1,6 @@
 package com.nengjun.avatar.helper;
 
+import com.nengjun.avatar.exception.HexException;
 import org.apache.ibatis.cache.Cache;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.mapping.SqlSource;
@@ -35,6 +36,9 @@ public abstract class MapperTemplate {
      * @return
      */
     public static Class<?> getMapperClass(String msId) {
+        if (msId.indexOf(".") == -1) {
+            throw new HexException(1000, "当前MappedStatement的id=" + msId + ",不符合MappedStatement的规则!");
+        }
         String mapperClassStr = msId.substring(0, msId.lastIndexOf("."));
         try {
             return Class.forName(mapperClassStr);
@@ -141,6 +145,9 @@ public abstract class MapperTemplate {
      * @throws IllegalAccessException
      */
     public void setSqlSource(MappedStatement ms) throws Exception {
+        if (this.mapperClass == getMapperClass(ms.getId())) {
+            throw new HexException(1000, "请不要配置或扫描通用Mapper接口类：" + this.mapperClass);
+        }
         Method method = methodMap.get(getMethodName(ms));
         try {
             //第一种，直接操作ms，不需要返回值
@@ -159,6 +166,8 @@ public abstract class MapperTemplate {
                 SqlSource sqlSource = createSqlSource(ms, xmlSql);
                 //替换原有的SqlSource
                 setSqlSource(ms, sqlSource);
+            } else {
+                throw new HexException(1000, "自定义Mapper方法返回类型错误,可选的返回类型为void,SqlNode,String三种!");
             }
             //cache
             checkCache(ms);
