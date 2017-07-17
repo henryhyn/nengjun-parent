@@ -3,7 +3,9 @@ package com.nengjun.app.plant.web.config;
 import com.nengjun.avatar.helper.MapperHelper;
 import com.nengjun.avatar.mapper.SqlMapper;
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.mybatis.spring.boot.autoconfigure.MybatisAutoConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,6 +16,7 @@ import java.util.List;
  * Created by Henry on 2017/7/17.
  */
 @Configuration
+@AutoConfigureAfter(MybatisAutoConfiguration.class)
 public class MapperConfiguration {
     @Autowired
     private List<SqlSessionFactory> sqlSessionFactoryList;
