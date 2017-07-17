@@ -14,6 +14,11 @@
     <dependencies>
         <dependency>
             <groupId>com.nengjun</groupId>
+            <artifactId>avatar-interface</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.nengjun</groupId>
             <artifactId>avatar-utils</artifactId>
             <version>0.0.1</version>
         </dependency>
