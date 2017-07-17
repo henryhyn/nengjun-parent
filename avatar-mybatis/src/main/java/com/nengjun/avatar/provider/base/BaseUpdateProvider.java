@@ -14,8 +14,9 @@ public class BaseUpdateProvider extends MapperTemplate {
     }
 
     public String updateByPrimaryKey(MappedStatement ms) {
+        Class<?> entityClass = getEntityClass(ms);
         return new SQL() {{
-            UPDATE("poi_plant");
+            UPDATE(tableName(entityClass));
             SET("name = #{name}");
             WHERE("id = #{id}");
         }}.toString();

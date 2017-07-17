@@ -14,8 +14,9 @@ public class BaseInsertProvider extends MapperTemplate {
     }
 
     public String insert(MappedStatement ms) {
+        Class<?> entityClass = getEntityClass(ms);
         return new SQL() {{
-            INSERT_INTO("poi_plant");
+            INSERT_INTO(tableName(entityClass));
             VALUES("name", "#{name}");
         }}.toString();
     }

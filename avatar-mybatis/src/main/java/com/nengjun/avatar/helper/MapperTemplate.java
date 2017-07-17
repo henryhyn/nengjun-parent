@@ -1,6 +1,7 @@
 package com.nengjun.avatar.helper;
 
 import com.nengjun.avatar.exception.HexException;
+import com.nengjun.avatar.utils.lang.StringUtil;
 import org.apache.ibatis.cache.Cache;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.mapping.SqlSource;
@@ -21,6 +22,7 @@ import java.util.Map;
 public abstract class MapperTemplate {
     private static final XMLLanguageDriver languageDriver = new XMLLanguageDriver();
     protected Map<String, Method> methodMap = new HashMap<String, Method>();
+    protected Map<String, Class<?>> entityClassMap = new HashMap<String, Class<?>>();
     protected Class<?> mapperClass;
     protected MapperHelper mapperHelper;
 
@@ -187,5 +189,20 @@ public abstract class MapperTemplate {
      */
     public SqlSource createSqlSource(MappedStatement ms, String xmlSql) {
         return languageDriver.createSqlSource(ms.getConfiguration(), "<script>\n\t" + xmlSql + "</script>", null);
+    }
+
+    public Class<?> getEntityClass(MappedStatement ms) {
+        String msId = ms.getId();
+        if (entityClassMap.containsKey(msId)) {
+            return entityClassMap.get(msId);
+        } else {
+            Class<?> mapperClass = getMapperClass(msId);
+            entityClassMap.put(msId, mapperClass);
+            return mapperClass;
+        }
+    }
+
+    protected String tableName(Class<?> entityClass) {
+        return StringUtil.camelhumpToUnderline(entityClass.getSimpleName()).toLowerCase().replaceFirst("_mapper", "");
     }
 }

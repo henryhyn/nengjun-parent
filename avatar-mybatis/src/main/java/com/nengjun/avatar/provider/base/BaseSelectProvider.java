@@ -2,7 +2,6 @@ package com.nengjun.avatar.provider.base;
 
 import com.nengjun.avatar.helper.MapperHelper;
 import com.nengjun.avatar.helper.MapperTemplate;
-import com.nengjun.avatar.utils.lang.StringUtil;
 import org.apache.ibatis.jdbc.SQL;
 import org.apache.ibatis.mapping.MappedStatement;
 
@@ -15,17 +14,19 @@ public class BaseSelectProvider extends MapperTemplate {
     }
 
     public String selectByPrimaryKey(MappedStatement ms) {
+        Class<?> entityClass = getEntityClass(ms);
         return new SQL() {{
             SELECT("*");
-            FROM(StringUtil.camelhumpToUnderline("PoiPlant").toLowerCase());
+            FROM(tableName(entityClass));
             WHERE("id = #{id}");
         }}.toString();
     }
 
     public String selectAll(MappedStatement ms) {
+        Class<?> entityClass = getEntityClass(ms);
         return new SQL() {{
             SELECT("*");
-            FROM(StringUtil.camelhumpToUnderline("PoiPlant").toLowerCase());
+            FROM(tableName(entityClass));
         }}.toString();
     }
 }

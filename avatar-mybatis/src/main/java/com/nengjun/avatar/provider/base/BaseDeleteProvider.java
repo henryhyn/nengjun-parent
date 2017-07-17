@@ -14,8 +14,9 @@ public class BaseDeleteProvider extends MapperTemplate {
     }
 
     public String deleteByPrimaryKey(MappedStatement ms) {
+        Class<?> entityClass = getEntityClass(ms);
         return new SQL() {{
-            DELETE_FROM("poi_plant");
+            DELETE_FROM(tableName(entityClass));
             WHERE("id = #{id}");
         }}.toString();
     }
