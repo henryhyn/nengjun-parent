@@ -23,7 +23,7 @@ public class PoiPlantController {
 
     @GetMapping("/plants")
     public Result _index() {
-        List<PoiPlant> plantList = poiPlantMapper.selectList();
+        List<PoiPlant> plantList = poiPlantMapper.selectAll();
         Validate.isEmpty("plantList", plantList);
         return ResultUtil.success(plantList);
     }

@@ -22,7 +22,7 @@ public class BaseSelectProvider extends MapperTemplate {
         }}.toString();
     }
 
-    public String selectAll() {
+    public String selectAll(MappedStatement ms) {
         return new SQL() {{
             SELECT("*");
             FROM(StringUtil.camelhumpToUnderline("PoiPlant").toLowerCase());
