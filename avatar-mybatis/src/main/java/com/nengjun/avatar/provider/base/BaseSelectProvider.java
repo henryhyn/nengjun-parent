@@ -29,4 +29,12 @@ public class BaseSelectProvider extends MapperTemplate {
             FROM(tableName(entityClass));
         }}.toString();
     }
+
+    public String selectByPage(MappedStatement ms) {
+        Class<?> entityClass = getEntityClass(ms);
+        return new SQL() {{
+            SELECT("*");
+            FROM(tableName(entityClass));
+        }}.toString() + " limit #{offset}, #{pageSize}";
+    }
 }

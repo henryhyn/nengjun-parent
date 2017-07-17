@@ -2,6 +2,7 @@ package com.nengjun.app.plant.dao.mapper;
 
 import com.nengjun.AbstractTest;
 import com.nengjun.app.plant.dao.entity.PoiPlant;
+import com.nengjun.avatar.entity.Example;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,11 @@ public class PoiPlantMapperTest extends AbstractTest {
 
         plant.setAltName(null);
         poiPlantMapper.updateByPrimaryKey(plant);
+
+        Example example = new Example();
+        example.setPage(1);
+        example.setPageSize(2);
+        Assert.assertEquals(2, poiPlantMapper.selectByPage(example).size());
 
         // 测试删除
         poiPlantMapper.deleteByPrimaryKey(2);

@@ -220,7 +220,7 @@ public abstract class MapperTemplate {
         List<String> columns = new ArrayList<>();
         Field[] fields = entityClass.getDeclaredFields();
         for (Field field : fields) {
-            if (Modifier.isStatic(field.getModifiers())) {
+            if (Modifier.isStatic(field.getModifiers()) || "id".equals(field.getName())) {
                 continue;
             }
             columns.add(field.getName());
