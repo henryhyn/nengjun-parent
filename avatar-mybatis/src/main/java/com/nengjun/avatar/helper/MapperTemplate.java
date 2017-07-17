@@ -11,9 +11,10 @@ import org.apache.ibatis.scripting.xmltags.DynamicSqlSource;
 import org.apache.ibatis.scripting.xmltags.SqlNode;
 import org.apache.ibatis.scripting.xmltags.XMLLanguageDriver;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import java.lang.reflect.*;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -197,12 +198,33 @@ public abstract class MapperTemplate {
             return entityClassMap.get(msId);
         } else {
             Class<?> mapperClass = getMapperClass(msId);
-            entityClassMap.put(msId, mapperClass);
-            return mapperClass;
+            Type[] types = mapperClass.getGenericInterfaces();
+            for (Type type : types) {
+                if (!(type instanceof ParameterizedType)) {
+                    continue;
+                }
+                ParameterizedType t = (ParameterizedType) type;
+                Class<?> returnType = (Class<?>) t.getActualTypeArguments()[0];
+                entityClassMap.put(msId, returnType);
+                return returnType;
+            }
         }
+        throw new HexException(1001, "无法获取 Mapper<T, PK> 泛型类型: " + msId);
     }
 
     protected String tableName(Class<?> entityClass) {
-        return StringUtil.camelhumpToUnderline(entityClass.getSimpleName()).toLowerCase().replaceFirst("_mapper", "");
+        return StringUtil.camelhumpToUnderline(entityClass.getSimpleName()).toLowerCase();
+    }
+
+    protected List<String> columnNameList(Class<?> entityClass) {
+        List<String> columns = new ArrayList<>();
+        Field[] fields = entityClass.getDeclaredFields();
+        for (Field field : fields) {
+            if (Modifier.isStatic(field.getModifiers())) {
+                continue;
+            }
+            columns.add(field.getName());
+        }
+        return columns;
     }
 }

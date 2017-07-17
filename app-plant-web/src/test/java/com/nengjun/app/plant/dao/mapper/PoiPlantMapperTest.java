@@ -24,9 +24,13 @@ public class PoiPlantMapperTest extends AbstractTest {
 
         // 测试更新
         plant.setName("月季");
+        plant.setAltName("蔷薇花");
         poiPlantMapper.updateByPrimaryKey(plant);
         plant = poiPlantMapper.selectByPrimaryKey(2);
         Assert.assertEquals("月季", plant.getName());
+
+        plant.setAltName(null);
+        poiPlantMapper.updateByPrimaryKey(plant);
 
         // 测试删除
         poiPlantMapper.deleteByPrimaryKey(2);

@@ -2,6 +2,7 @@ package com.nengjun.avatar.provider.base;
 
 import com.nengjun.avatar.helper.MapperHelper;
 import com.nengjun.avatar.helper.MapperTemplate;
+import com.nengjun.avatar.utils.lang.StringUtil;
 import org.apache.ibatis.jdbc.SQL;
 import org.apache.ibatis.mapping.MappedStatement;
 
@@ -17,7 +18,20 @@ public class BaseUpdateProvider extends MapperTemplate {
         Class<?> entityClass = getEntityClass(ms);
         return new SQL() {{
             UPDATE(tableName(entityClass));
-            SET("name = #{name}");
+            for (String columnName : columnNameList(entityClass)) {
+                SET(String.format("%s = #{%s}", StringUtil.camelhumpToUnderline(columnName).toLowerCase(), columnName));
+            }
+            WHERE("id = #{id}");
+        }}.toString();
+    }
+
+    public String updateByPrimaryKeySelective(MappedStatement ms) {
+        Class<?> entityClass = getEntityClass(ms);
+        return new SQL() {{
+            UPDATE(tableName(entityClass));
+            for (String columnName : columnNameList(entityClass)) {
+                SET(String.format("%s = #{%s}", StringUtil.camelhumpToUnderline(columnName).toLowerCase(), columnName));
+            }
             WHERE("id = #{id}");
         }}.toString();
     }
