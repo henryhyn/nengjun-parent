@@ -35,6 +35,6 @@ public class BaseSelectProvider extends MapperTemplate {
         return new SQL() {{
             SELECT("*");
             FROM(tableName(entityClass));
-        }}.toString() + " limit #{offset}, #{pageSize}";
+        }}.toString();
     }
 }

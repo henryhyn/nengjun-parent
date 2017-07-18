@@ -38,6 +38,8 @@ public class PoiPlantMapperTest extends AbstractTest {
         PageModel<PoiPlant> plantPageModel = new PageModel<>();
         plantPageModel.setPage(1);
         plantPageModel.setPageSize(2);
+        plantPageModel.addCondition("id > ?", 1);
+        plantPageModel.setOrders("id.desc");
         List<PoiPlant> plantList = poiPlantMapper.selectByPage(plantPageModel);
         plantPageModel.setList(plantList);
         System.out.println(plantPageModel);
