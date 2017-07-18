@@ -1,9 +1,7 @@
 package com.nengjun.avatar.mapper.base.select;
 
-import com.nengjun.avatar.entity.Example;
 import com.nengjun.avatar.provider.base.BaseSelectProvider;
 import com.nengjun.avatar.type.PageModel;
-import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.SelectProvider;
 
 import java.util.List;
@@ -13,5 +11,5 @@ import java.util.List;
  */
 public interface SelectByPage<T, PK> {
     @SelectProvider(type = BaseSelectProvider.class, method = "dynamicSQL")
-    List<T> selectByPage(Example example);
+    List<T> selectByPage(PageModel pageModel);
 }

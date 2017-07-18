@@ -2,10 +2,12 @@ package com.nengjun.app.plant.dao.mapper;
 
 import com.nengjun.AbstractTest;
 import com.nengjun.app.plant.dao.entity.PoiPlant;
-import com.nengjun.avatar.entity.Example;
+import com.nengjun.avatar.type.PageModel;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
 
 /**
  * Created by Henry on 2017/7/13.
@@ -33,10 +35,12 @@ public class PoiPlantMapperTest extends AbstractTest {
         plant.setAltName(null);
         poiPlantMapper.updateByPrimaryKey(plant);
 
-        Example example = new Example();
-        example.setPage(1);
-        example.setPageSize(2);
-        Assert.assertEquals(2, poiPlantMapper.selectByPage(example).size());
+        PageModel<PoiPlant> plantPageModel = new PageModel<>();
+        plantPageModel.setPage(1);
+        plantPageModel.setPageSize(2);
+        List<PoiPlant> plantList = poiPlantMapper.selectByPage(plantPageModel);
+        plantPageModel.setList(plantList);
+        System.out.println(plantPageModel);
 
         // 测试删除
         poiPlantMapper.deleteByPrimaryKey(2);
