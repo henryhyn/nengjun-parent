@@ -19,6 +19,7 @@
         <module>avatar-utils</module>
         <module>app-plant-web</module>
         <module>app-plant-dao</module>
+        <module>app-content-dao</module>
     </modules>
 
     <properties>
@@ -48,6 +49,11 @@
             <dependency>
                 <groupId>com.nengjun</groupId>
                 <artifactId>app-plant-dao</artifactId>
+                <version>0.0.1</version>
+            </dependency>
+            <dependency>
+                <groupId>com.nengjun</groupId>
+                <artifactId>app-content-dao</artifactId>
                 <version>0.0.1</version>
             </dependency>
 

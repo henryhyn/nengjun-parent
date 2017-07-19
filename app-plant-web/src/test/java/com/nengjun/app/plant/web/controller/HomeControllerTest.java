@@ -11,8 +11,8 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 public class HomeControllerTest extends AbstractMvcTest {
     @Test
     public void testHome() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.get("/"))
+        mvc.perform(MockMvcRequestBuilders.get("/say?id=1"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().json("{\"code\":0,\"message\":\"成功!\",\"data\":\"env: dev\"}"));
+                .andExpect(MockMvcResultMatchers.content().json("{\"code\":0,\"message\":\"成功!\",\"data\":\"id: 1; env: dev\"}"));
     }
 }
