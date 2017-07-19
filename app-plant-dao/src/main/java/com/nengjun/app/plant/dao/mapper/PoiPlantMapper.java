@@ -1,7 +1,7 @@
 package com.nengjun.app.plant.dao.mapper;
 
 import com.nengjun.app.plant.dao.entity.PoiPlant;
-import com.nengjun.avatar.mapper.SqlMapper;
+import com.nengjun.avatar.mybatis.mapper.SqlMapper;
 import org.apache.ibatis.annotations.Mapper;
 
 /**

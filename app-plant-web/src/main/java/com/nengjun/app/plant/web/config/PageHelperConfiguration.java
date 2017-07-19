@@ -1,6 +1,6 @@
 package com.nengjun.app.plant.web.config;
 
-import com.nengjun.avatar.helper.PageInterceptor;
+import com.nengjun.avatar.mybatis.helper.PageInterceptor;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.boot.autoconfigure.MybatisAutoConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;

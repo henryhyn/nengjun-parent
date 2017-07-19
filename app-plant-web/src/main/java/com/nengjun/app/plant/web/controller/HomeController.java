@@ -1,9 +1,9 @@
 package com.nengjun.app.plant.web.controller;
 
 import com.nengjun.app.plant.web.config.GlobalSetting;
-import com.nengjun.avatar.type.Result;
-import com.nengjun.avatar.utils.ResultUtil;
-import com.nengjun.avatar.utils.Validate;
+import com.nengjun.avatar.face.type.Result;
+import com.nengjun.avatar.face.utils.ResultUtil;
+import com.nengjun.avatar.face.utils.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;

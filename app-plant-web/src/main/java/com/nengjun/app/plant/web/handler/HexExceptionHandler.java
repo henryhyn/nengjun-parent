@@ -1,8 +1,8 @@
 package com.nengjun.app.plant.web.handler;
 
-import com.nengjun.avatar.exception.HexException;
-import com.nengjun.avatar.type.Result;
-import com.nengjun.avatar.utils.ResultUtil;
+import com.nengjun.avatar.face.exception.HexException;
+import com.nengjun.avatar.face.type.Result;
+import com.nengjun.avatar.face.utils.ResultUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;

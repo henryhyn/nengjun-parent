@@ -1,7 +1,7 @@
 package com.nengjun.app.plant.web.config;
 
-import com.nengjun.avatar.helper.MapperHelper;
-import com.nengjun.avatar.mapper.SqlMapper;
+import com.nengjun.avatar.mybatis.helper.MapperHelper;
+import com.nengjun.avatar.mybatis.mapper.SqlMapper;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.boot.autoconfigure.MybatisAutoConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
