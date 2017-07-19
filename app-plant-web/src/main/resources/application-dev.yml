@@ -9,4 +9,4 @@ spring:
     schema: classpath:import.sql
 logging:
   level:
-    com.nengjun: TRACE
+    com.nengjun: DEBUG

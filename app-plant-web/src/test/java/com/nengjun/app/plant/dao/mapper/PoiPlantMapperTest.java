@@ -1,6 +1,7 @@
 package com.nengjun.app.plant.dao.mapper;
 
 import com.nengjun.AbstractTest;
+import com.nengjun.app.plant.dao.entity.PoiCountry;
 import com.nengjun.app.plant.dao.entity.PoiPlant;
 import com.nengjun.avatar.type.PageModel;
 import org.junit.Assert;
@@ -15,6 +16,9 @@ import java.util.List;
 public class PoiPlantMapperTest extends AbstractTest {
     @Autowired
     private PoiPlantMapper poiPlantMapper;
+
+    @Autowired
+    private PoiCountryMapper poiCountryMapper;
 
     @Test
     public void test1() {
@@ -46,5 +50,11 @@ public class PoiPlantMapperTest extends AbstractTest {
         // 测试删除
         poiPlantMapper.deleteByPrimaryKey(2);
         Assert.assertEquals(1, poiPlantMapper.selectAll().size());
+
+        PageModel<PoiCountry> countryPageModel = new PageModel<>();
+        countryPageModel.setPageAndPageSize(2, 10);
+        List<PoiCountry> countryList = poiCountryMapper.selectByPage(countryPageModel);
+        countryPageModel.setList(countryList);
+        System.out.println(countryPageModel);
     }
 }
