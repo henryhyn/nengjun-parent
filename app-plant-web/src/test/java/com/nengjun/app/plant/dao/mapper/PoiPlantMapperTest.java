@@ -3,7 +3,7 @@ package com.nengjun.app.plant.dao.mapper;
 import com.nengjun.AbstractTest;
 import com.nengjun.app.plant.dao.entity.PoiCountry;
 import com.nengjun.app.plant.dao.entity.PoiPlant;
-import com.nengjun.avatar.type.PageModel;
+import com.nengjun.avatar.face.type.PageModel;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
