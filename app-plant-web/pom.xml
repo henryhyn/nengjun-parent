@@ -24,12 +24,10 @@
         <dependency>
             <groupId>com.nengjun</groupId>
             <artifactId>avatar-interface</artifactId>
-            <version>0.0.1</version>
         </dependency>
         <dependency>
             <groupId>com.nengjun</groupId>
             <artifactId>app-plant-dao</artifactId>
-            <version>0.0.1</version>
         </dependency>
 
         <dependency>
