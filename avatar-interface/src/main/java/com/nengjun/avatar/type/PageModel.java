@@ -12,11 +12,9 @@ import java.util.Map;
  */
 public class PageModel<T> {
     @Getter
-    @Setter
     private Integer page;
 
     @Getter
-    @Setter
     private Integer pageSize;
 
     @Getter
@@ -35,6 +33,11 @@ public class PageModel<T> {
 
     public PageModel() {
         conditions = new HashMap<>();
+    }
+
+    public void setPageAndPageSize(Integer page, Integer pageSize) {
+        this.page = page;
+        this.pageSize = pageSize;
     }
 
     public void addCondition(String key, Object value) {

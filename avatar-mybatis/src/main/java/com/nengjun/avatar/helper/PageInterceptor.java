@@ -42,12 +42,9 @@ public class PageInterceptor implements Interceptor {
         ResultHandler resultHandler = (ResultHandler) args[3];
         Executor executor = (Executor) invocation.getTarget();
         BoundSql boundSql = ms.getBoundSql(pageModel.getConditions());
-        System.out.println(ms.getId());
-        System.out.println(rowBounds.getOffset() + " : " + rowBounds.getLimit());
-        System.out.println(resultHandler);
 
         // 计算总的行数
-        MappedStatement countMs = getCountMs(ms, ms.getId() + "_COUNT");
+        MappedStatement countMs = getCountMs(ms, ms.getId() + "Count");
         Long total = executeCount(executor, countMs, new Object(), boundSql, rowBounds, resultHandler);
         pageModel.setTotal(total);
 
