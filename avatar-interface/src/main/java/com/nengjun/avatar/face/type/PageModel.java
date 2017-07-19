@@ -32,6 +32,7 @@ public class PageModel<T> {
     private Map<String, Object> conditions;
 
     public PageModel() {
+        orders = "";
         conditions = new HashMap<>();
     }
 

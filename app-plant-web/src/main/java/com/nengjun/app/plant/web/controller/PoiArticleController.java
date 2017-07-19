@@ -2,6 +2,7 @@ package com.nengjun.app.plant.web.controller;
 
 import com.nengjun.app.content.dao.entity.PoiArticle;
 import com.nengjun.app.content.dao.mapper.PoiArticleMapper;
+import com.nengjun.avatar.face.type.PageModel;
 import com.nengjun.avatar.face.type.Result;
 import com.nengjun.avatar.face.utils.ResultUtil;
 import com.nengjun.avatar.face.utils.Validate;
@@ -23,9 +24,11 @@ public class PoiArticleController {
 
     @GetMapping("/articles")
     Result _index() {
-        List<PoiArticle> articleList = poiArticleMapper.selectAll();
-        Validate.isEmpty("articleList", articleList);
-        return ResultUtil.success(articleList);
+        PageModel<PoiArticle> articlePageModel = new PageModel<>();
+        articlePageModel.setPageAndPageSize(1, 10);
+        List<PoiArticle> articleList = poiArticleMapper.selectByPage(articlePageModel);
+        articlePageModel.setList(articleList);
+        return ResultUtil.success(articlePageModel);
     }
 
     @GetMapping("/articles/{id}")
