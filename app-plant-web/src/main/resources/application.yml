@@ -3,5 +3,8 @@ spring:
     active: dev
   mvc:
     static-path-pattern: /static/*
+server:
+  port: 8081
+  context-path: /
 logging:
   file: /var/applogs/app-plant-web/app-plant-web.log
