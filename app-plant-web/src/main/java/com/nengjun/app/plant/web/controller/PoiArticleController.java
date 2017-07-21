@@ -40,7 +40,7 @@ public class PoiArticleController {
     }
 
     @PostMapping("/articles")
-    public Result create(@Valid PoiArticle poiArticle, BindingResult bindingResult) {
+    public Result create(@Valid @RequestBody PoiArticle poiArticle, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             Validate.isRecord(true, bindingResult.getFieldError().getDefaultMessage());
         }
@@ -50,7 +50,7 @@ public class PoiArticleController {
     }
 
     @PutMapping("/articles/{id}")
-    public Result update(@PathVariable("id") Integer id, @Valid PoiArticle poiArticle, BindingResult bindingResult) {
+    public Result update(@PathVariable("id") Integer id, @Valid @RequestBody PoiArticle poiArticle, BindingResult bindingResult) {
         Validate.idValid("id", id);
         if (bindingResult.hasErrors()) {
             Validate.isRecord(true, bindingResult.getFieldError().getDefaultMessage());
