@@ -12,6 +12,6 @@ public class PoiArticle {
     @NotBlank(message = "标题 title 不能为空")
     private String title;
     @NotBlank(message = "正文 content 不能为空")
-    private String mdcontent;
-    private String htmlcontent;
+    private String mdContent;
+    private String htmlContent;
 }

@@ -5,6 +5,6 @@
 <body>
 <h1>${article.title}</h1>
 
-<div>${article.htmlcontent}</div>
+<div>${article.htmlContent}</div>
 </body>
 </html>

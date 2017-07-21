@@ -16,8 +16,8 @@ DROP TABLE IF EXISTS `poi_article`;
 CREATE TABLE `poi_article` (
   `id`          INT(11) NOT NULL AUTO_INCREMENT,
   `title`       VARCHAR(512)     DEFAULT NULL,
-  `mdcontent`   LONGTEXT         DEFAULT NULL,
-  `htmlcontent` LONGTEXT         DEFAULT NULL,
+  `md_content`   LONGTEXT         DEFAULT NULL,
+  `html_content` LONGTEXT         DEFAULT NULL,
   PRIMARY KEY (`id`)
 )
   ENGINE = InnoDB
