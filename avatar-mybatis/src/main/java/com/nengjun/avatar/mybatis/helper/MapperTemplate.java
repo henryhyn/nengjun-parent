@@ -4,18 +4,18 @@ import com.nengjun.avatar.face.exception.HexException;
 import com.nengjun.avatar.utils.lang.StringUtil;
 import org.apache.ibatis.cache.Cache;
 import org.apache.ibatis.mapping.MappedStatement;
+import org.apache.ibatis.mapping.ResultMap;
+import org.apache.ibatis.mapping.ResultMapping;
 import org.apache.ibatis.mapping.SqlSource;
 import org.apache.ibatis.reflection.MetaObject;
 import org.apache.ibatis.reflection.SystemMetaObject;
 import org.apache.ibatis.scripting.xmltags.DynamicSqlSource;
 import org.apache.ibatis.scripting.xmltags.SqlNode;
 import org.apache.ibatis.scripting.xmltags.XMLLanguageDriver;
+import org.apache.ibatis.session.Configuration;
 
 import java.lang.reflect.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Henry on 2017/7/14.
@@ -104,6 +104,27 @@ public abstract class MapperTemplate {
             return methodMap.get(methodName) != null;
         }
         return false;
+    }
+
+    protected void setResultType(MappedStatement ms, Class<?> entityClass) {
+        List<ResultMap> resultMaps = new ArrayList<ResultMap>();
+        resultMaps.add(getResultMap(ms.getConfiguration(), entityClass));
+        MetaObject metaObject = SystemMetaObject.forObject(ms);
+        metaObject.setValue("resultMaps", Collections.unmodifiableList(resultMaps));
+    }
+
+    private ResultMap getResultMap(Configuration configuration, Class<?> entityClass) {
+        List<ResultMapping> resultMappings = new ArrayList<ResultMapping>();
+        Field[] fields = entityClass.getDeclaredFields();
+        for (Field field : fields) {
+            if (Modifier.isStatic(field.getModifiers())) {
+                continue;
+            }
+            ResultMapping.Builder builder = new ResultMapping.Builder(configuration, field.getName(), StringUtil.camelhumpToUnderline(field.getName()).toLowerCase(), field.getType());
+            resultMappings.add(builder.build());
+        }
+        ResultMap.Builder builder = new ResultMap.Builder(configuration, "BaseMapperResultMap", entityClass, resultMappings, true);
+        return builder.build();
     }
 
     /**

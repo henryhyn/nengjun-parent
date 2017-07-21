@@ -25,9 +25,11 @@ public class PoiPlantMapperTest extends AbstractTest {
         // 测试新增
         PoiPlant plant = new PoiPlant();
         plant.setName("栀子花");
+        plant.setAltName("何炅");
         poiPlantMapper.insert(plant);
         plant = poiPlantMapper.selectByPrimaryKey(2);
         Assert.assertEquals("栀子花", plant.getName());
+        Assert.assertEquals("何炅", plant.getAltName());
 
         // 测试更新
         plant.setName("月季");

@@ -15,6 +15,7 @@ public class BaseSelectProvider extends MapperTemplate {
 
     public String selectByPrimaryKey(MappedStatement ms) {
         Class<?> entityClass = getEntityClass(ms);
+        setResultType(ms, entityClass);
         return new SQL() {{
             SELECT("*");
             FROM(tableName(entityClass));
@@ -24,6 +25,7 @@ public class BaseSelectProvider extends MapperTemplate {
 
     public String selectAll(MappedStatement ms) {
         Class<?> entityClass = getEntityClass(ms);
+        setResultType(ms, entityClass);
         return new SQL() {{
             SELECT("*");
             FROM(tableName(entityClass));
@@ -32,6 +34,7 @@ public class BaseSelectProvider extends MapperTemplate {
 
     public String selectByPage(MappedStatement ms) {
         Class<?> entityClass = getEntityClass(ms);
+        setResultType(ms, entityClass);
         return new SQL() {{
             SELECT("*");
             FROM(tableName(entityClass));
