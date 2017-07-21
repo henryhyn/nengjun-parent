@@ -241,7 +241,10 @@ public abstract class MapperTemplate {
         List<String> columns = new ArrayList<>();
         Field[] fields = entityClass.getDeclaredFields();
         for (Field field : fields) {
-            if (Modifier.isStatic(field.getModifiers()) || "id".equals(field.getName())) {
+            if (Modifier.isStatic(field.getModifiers())
+                    || "id".equals(field.getName())
+                    || "createTime".equals(field.getName())
+                    || "updateTime".equals(field.getName())) {
                 continue;
             }
             columns.add(field.getName());

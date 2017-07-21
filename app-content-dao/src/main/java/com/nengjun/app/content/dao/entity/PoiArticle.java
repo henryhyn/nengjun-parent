@@ -3,6 +3,8 @@ package com.nengjun.app.content.dao.entity;
 import lombok.Data;
 import org.hibernate.validator.constraints.NotBlank;
 
+import java.util.Date;
+
 /**
  * Created by Henry on 2017/7/19.
  */
@@ -14,4 +16,6 @@ public class PoiArticle {
     @NotBlank(message = "正文 content 不能为空")
     private String mdContent;
     private String htmlContent;
+    private Date createTime;
+    private Date updateTime;
 }

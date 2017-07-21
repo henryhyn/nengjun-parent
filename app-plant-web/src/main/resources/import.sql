@@ -14,17 +14,20 @@ INSERT INTO `poi_plant` VALUES (1, '玫瑰花', '爱情花');
 DROP TABLE IF EXISTS `poi_article`;
 
 CREATE TABLE `poi_article` (
-  `id`          INT(11) NOT NULL AUTO_INCREMENT,
-  `title`       VARCHAR(512)     DEFAULT NULL,
-  `md_content`   LONGTEXT         DEFAULT NULL,
-  `html_content` LONGTEXT         DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `id`           INT(11)  NOT NULL AUTO_INCREMENT,
+  `title`        VARCHAR(512)      DEFAULT NULL,
+  `md_content`   LONGTEXT,
+  `html_content` LONGTEXT,
+  `create_time`  DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_time`  DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_on_update_time` (`update_time`)
 )
   ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
-INSERT INTO `poi_article` VALUES (1, '开始写文章啦', '', '<h2>这是我的第一篇文章!</h2>');
-INSERT INTO `poi_article` VALUES (2, '继续写哦', '', '<h2>这是我的第二篇文章!</h2>');
+INSERT INTO `poi_article` (title, html_content) VALUES ('开始写文章啦', '<h2>这是我的第一篇文章!</h2>');
+INSERT INTO `poi_article` (title, html_content) VALUES ('继续写哦', '<h2>这是我的第二篇文章!</h2>');
 
 DROP TABLE IF EXISTS `poi_country`;
 
