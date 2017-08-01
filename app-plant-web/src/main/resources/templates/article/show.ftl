@@ -19,6 +19,7 @@
         <h1 class="hui-md-title">${article.title}</h1>
     ${article.htmlContent}
     </div>
+    <a href="/">返回首页</a>
 </div>
 </body>
 </html>

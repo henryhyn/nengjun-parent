@@ -37,7 +37,7 @@ public class PoiPlantController {
     }
 
     @PostMapping("/plants")
-    public Result create(@Valid PoiPlant poiPlant, BindingResult bindingResult) {
+    public Result create(@Valid @RequestBody PoiPlant poiPlant, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             Validate.isRecord(true, bindingResult.getFieldError().getDefaultMessage());
         }
@@ -47,7 +47,7 @@ public class PoiPlantController {
     }
 
     @PutMapping("/plants/{id}")
-    public Result update(@PathVariable("id") Integer id, @Valid PoiPlant poiPlant, BindingResult bindingResult) {
+    public Result update(@PathVariable("id") Integer id, @Valid @RequestBody PoiPlant poiPlant, BindingResult bindingResult) {
         Validate.idValid("id", id);
         if (bindingResult.hasErrors()) {
             Validate.isRecord(true, bindingResult.getFieldError().getDefaultMessage());
