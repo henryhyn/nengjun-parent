@@ -2,6 +2,7 @@ package com.nengjun.app.plant.web.controller;
 
 import com.nengjun.app.plant.dao.entity.PoiPlant;
 import com.nengjun.app.plant.dao.mapper.PoiPlantMapper;
+import com.nengjun.avatar.face.type.PageModel;
 import com.nengjun.avatar.face.type.Result;
 import com.nengjun.avatar.face.utils.ResultUtil;
 import com.nengjun.avatar.face.utils.Validate;
@@ -23,9 +24,12 @@ public class PoiPlantController {
 
     @GetMapping("/plants")
     public Result _index() {
-        List<PoiPlant> plantList = poiPlantMapper.selectAll();
+        PageModel<PoiPlant> plantPageModel = new PageModel<>();
+        plantPageModel.setPageAndPageSize(1, 10);
+        List<PoiPlant> plantList = poiPlantMapper.selectByPage(plantPageModel);
         Validate.isEmpty("plantList", plantList);
-        return ResultUtil.success(plantList);
+        plantPageModel.setList(plantList);
+        return ResultUtil.success(plantPageModel);
     }
 
     @GetMapping("/plants/{id}")
