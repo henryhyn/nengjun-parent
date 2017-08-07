@@ -15,11 +15,14 @@
 </head>
 <body>
 <div class="hui-wrapper">
-    <div class="hui-md-output">
-        <h1 class="hui-md-title">${article.title}</h1>
-    ${article.htmlContent}
+    <div class="hui-inner">
+        <div class="hui-content hui-md-output">
+            <h1 class="hui-md-title">${article.title}</h1>
+        ${article.htmlContent}
+            <a href="/">返回首页</a>
+        </div>
     </div>
-    <a href="/">返回首页</a>
 </div>
+<script src="http://114.215.28.105/blog.js"></script>
 </body>
 </html>
