@@ -223,3 +223,19 @@ INSERT INTO poi_country (id, countryname, countrycode) VALUES (180, 'Yugoslavia'
 INSERT INTO poi_country (id, countryname, countrycode) VALUES (181, 'Zimbabwe', 'ZW');
 INSERT INTO poi_country (id, countryname, countrycode) VALUES (182, 'Zaire', 'ZR');
 INSERT INTO poi_country (id, countryname, countrycode) VALUES (183, 'Zambia', 'ZM');
+
+DROP TABLE IF EXISTS `poi_picture`;
+
+CREATE TABLE `poi_picture` (
+  `id`          INT(11) NOT NULL AUTO_INCREMENT,
+  `picture_key` VARCHAR(255)     DEFAULT NULL,
+  `fsize`       INT(11) NOT NULL,
+  `mime_type`   VARCHAR(255)     DEFAULT NULL,
+  `width`       INT(11) NOT NULL,
+  `height`      INT(11) NOT NULL,
+  `color_model` VARCHAR(255)     DEFAULT NULL,
+  `make_time`   VARCHAR(255)     DEFAULT NULL,
+  PRIMARY KEY (`id`)
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
