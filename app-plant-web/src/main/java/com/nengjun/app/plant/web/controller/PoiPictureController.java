@@ -2,6 +2,7 @@ package com.nengjun.app.plant.web.controller;
 
 import com.nengjun.app.content.dao.entity.PoiPicture;
 import com.nengjun.app.content.dao.mapper.PoiPictureMapper;
+import com.nengjun.app.plant.web.config.GlobalSetting;
 import com.nengjun.avatar.face.type.PageModel;
 import com.nengjun.avatar.face.type.Result;
 import com.nengjun.avatar.face.utils.ResultUtil;
@@ -27,17 +28,25 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 public class PoiPictureController {
-    private final String DOMAIN = "http://oucvb8wcs.bkt.clouddn.com/";
-    private final String ACCESS_KEY = "p1fVZ4JP23BIBSx4futRweKfYWzEnOq9KaCK1A46";
-    private final String SECRET_KEY = "IrbXoUrVV9jvOoy66msGsAh2O7pxOchJbPQc0Y9Y";
-    private final String BUCKET = "pictures";
-
-    private Auth auth;
-    private UploadManager uploadManager;
-    private StringMap policy;
+    @Autowired
+    private GlobalSetting globalSetting;
 
     @Autowired
     private PoiPictureMapper poiPictureMapper;
+
+    private final String ACCESS_KEY = "p1fVZ4JP23BIBSx4futRweKfYWzEnOq9KaCK1A46";
+    private final String SECRET_KEY = "IrbXoUrVV9jvOoy66msGsAh2O7pxOchJbPQc0Y9Y";
+
+    private Auth auth;
+    private StringMap policy;
+    private UploadManager uploadManager;
+
+    public PoiPictureController() {
+        auth = Auth.create(ACCESS_KEY, SECRET_KEY);
+        policy = new StringMap().putNotEmpty("returnBody", "{\"pictureKey\": ${key},\"fsize\": ${fsize},\"mimeType\": ${mimeType},\"width\": ${imageInfo.width},\"height\": ${imageInfo.height},\"colorModel\": ${imageInfo.colorModel},\"makeTime\": ${exif.DateTime.val}}");
+        Configuration cfg = new Configuration(Zone.zone2());
+        uploadManager = new UploadManager(cfg);
+    }
 
     @GetMapping("/images")
     Result _index() {
@@ -45,7 +54,7 @@ public class PoiPictureController {
         picturePageModel.setPageAndPageSize(1, 10);
         List<PoiPicture> pictureList = poiPictureMapper.selectByPage(picturePageModel);
         for (PoiPicture poiPicture : pictureList) {
-            poiPicture.setPictureKey(DOMAIN + poiPicture.getPictureKey());
+            poiPicture.setPictureKey(getAbsolutePath(poiPicture.getPictureKey()));
         }
         picturePageModel.setList(pictureList);
         return ResultUtil.success(picturePageModel);
@@ -53,13 +62,9 @@ public class PoiPictureController {
 
     @PostMapping("/images/upload")
     PoiPicture upload(@RequestParam("fileData") MultipartFile fileData) {
-        auth = Auth.create(ACCESS_KEY, SECRET_KEY);
-        Configuration cfg = new Configuration(Zone.zone2());
-        uploadManager = new UploadManager(cfg);
-        policy = new StringMap().putNotEmpty("returnBody", "{\"pictureKey\": ${key},\"fsize\": ${fsize},\"mimeType\": ${mimeType},\"width\": ${imageInfo.width},\"height\": ${imageInfo.height},\"colorModel\": ${imageInfo.colorModel},\"makeTime\": ${exif.DateTime.val}}");
         PoiPicture poiPicture = put(fileData);
         if (poiPicture == null) {
-            poiPicture = new PoiPicture();
+            return new PoiPicture();
         }
         poiPictureMapper.insert(poiPicture);
         return poiPicture;
@@ -84,6 +89,12 @@ public class PoiPictureController {
     }
 
     private String getUpToken() {
-        return auth.uploadToken(BUCKET, null, 3600L, policy);
+        String bucket = "prod".equals(globalSetting.getEnv()) ? "pictures" : "pictures-dev";
+        return auth.uploadToken(bucket, null, 3600L, policy);
+    }
+
+    private String getAbsolutePath(String key) {
+        String domain = "prod".equals(globalSetting.getEnv()) ? "http://oucvb8wcs.bkt.clouddn.com/" : "http://oud35cwi4.bkt.clouddn.com/";
+        return domain + key;
     }
 }

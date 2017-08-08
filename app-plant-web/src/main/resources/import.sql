@@ -241,5 +241,5 @@ CREATE TABLE `poi_picture` (
   ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
 
-INSERT INTO `poi_picture` VALUES (1, 'FlSYYaIHohfJ5u0SI1T9T80tklB9', 208325, 'image/png', 430, 287, 'nrgba', NULL);
-INSERT INTO `poi_picture` VALUES (2, 'FsQhaiSpSlL_swL1GH7w0KdSTw8L', 198512, 'image/png', 430, 287, 'nrgba', NULL);
+INSERT INTO `poi_picture` VALUES (1, 'FuyDovSaSxq_hJBTXF1smfq9kYEg', 29472, 'image/jpeg', 440, 330, 'ycbcr', NULL);
+INSERT INTO `poi_picture` VALUES (2, 'Flk-wACsCjHFMnyIfiU4plIemilJ', 18682, 'image/jpeg', 420, 323, 'ycbcr', NULL);

@@ -46,6 +46,7 @@ public class PoiArticleController {
         }
         PoiArticle article = new PoiArticle();
         copyProperties(poiArticle, article);
+        article.setStatus(0);
         return ResultUtil.success(poiArticleMapper.insert(article));
     }
 
