@@ -19,6 +19,7 @@ CREATE TABLE `poi_article` (
   COMMENT '状态: 0, 初始态; 1, 在线发布; -1 下线隐藏',
   `title`        VARCHAR(512)      DEFAULT NULL,
   `summary`      VARCHAR(255)      DEFAULT NULL,
+  `cover`        VARCHAR(255)      DEFAULT NULL,
   `md_content`   LONGTEXT,
   `html_content` LONGTEXT,
   `create_time`  DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -239,3 +240,6 @@ CREATE TABLE `poi_picture` (
 )
   ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
+
+INSERT INTO `poi_picture` VALUES (1, 'FlSYYaIHohfJ5u0SI1T9T80tklB9', 208325, 'image/png', 430, 287, 'nrgba', NULL);
+INSERT INTO `poi_picture` VALUES (2, 'FsQhaiSpSlL_swL1GH7w0KdSTw8L', 198512, 'image/png', 430, 287, 'nrgba', NULL);

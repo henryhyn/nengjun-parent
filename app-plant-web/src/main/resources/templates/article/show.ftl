@@ -18,6 +18,8 @@
     <div class="hui-inner">
         <div class="hui-content hui-md-output">
             <h1 class="hui-md-title">${article.title}</h1>
+            <img src="${article.cover}" class="hui-md-cover">
+            <blockquote class="hui-md-summary">${article.summary}</blockquote>
         ${article.htmlContent}
             <a href="/">返回首页</a>
         </div>

@@ -17,6 +17,7 @@ public class PoiArticle {
     @NotBlank(message = "标题 title 不能为空")
     private String summary;
     @NotBlank(message = "正文 content 不能为空")
+    private String cover;
     private String mdContent;
     private String htmlContent;
     private Date createTime;

@@ -69,6 +69,7 @@ public class PoiArticleController {
     private void copyProperties(PoiArticle poiArticle, PoiArticle article) {
         article.setTitle(poiArticle.getTitle());
         article.setSummary(poiArticle.getSummary());
+        article.setCover(poiArticle.getCover());
         article.setMdContent(poiArticle.getMdContent());
         article.setHtmlContent(poiArticle.getHtmlContent());
     }

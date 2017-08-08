@@ -2,6 +2,9 @@ package com.nengjun.app.plant.web.controller;
 
 import com.nengjun.app.content.dao.entity.PoiPicture;
 import com.nengjun.app.content.dao.mapper.PoiPictureMapper;
+import com.nengjun.avatar.face.type.PageModel;
+import com.nengjun.avatar.face.type.Result;
+import com.nengjun.avatar.face.utils.ResultUtil;
 import com.qiniu.common.QiniuException;
 import com.qiniu.common.Zone;
 import com.qiniu.http.Response;
@@ -11,13 +14,11 @@ import com.qiniu.util.Auth;
 import com.qiniu.util.StringMap;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Created by Henry on 2017/8/8.
@@ -26,6 +27,7 @@ import java.io.IOException;
 @RestController
 @RequestMapping("/api")
 public class PoiPictureController {
+    private final String DOMAIN = "http://oucvb8wcs.bkt.clouddn.com/";
     private final String ACCESS_KEY = "p1fVZ4JP23BIBSx4futRweKfYWzEnOq9KaCK1A46";
     private final String SECRET_KEY = "IrbXoUrVV9jvOoy66msGsAh2O7pxOchJbPQc0Y9Y";
     private final String BUCKET = "pictures";
@@ -36,6 +38,18 @@ public class PoiPictureController {
 
     @Autowired
     private PoiPictureMapper poiPictureMapper;
+
+    @GetMapping("/images")
+    Result _index() {
+        PageModel<PoiPicture> picturePageModel = new PageModel<>();
+        picturePageModel.setPageAndPageSize(1, 10);
+        List<PoiPicture> pictureList = poiPictureMapper.selectByPage(picturePageModel);
+        for (PoiPicture poiPicture : pictureList) {
+            poiPicture.setPictureKey(DOMAIN + poiPicture.getPictureKey());
+        }
+        picturePageModel.setList(pictureList);
+        return ResultUtil.success(picturePageModel);
+    }
 
     @PostMapping("/images/upload")
     PoiPicture upload(@RequestParam("fileData") MultipartFile fileData) {
