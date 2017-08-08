@@ -11,6 +11,7 @@ import java.util.Date;
 @Data
 public class PoiArticle {
     private Integer id;
+    private Integer status;
     @NotBlank(message = "标题 title 不能为空")
     private String title;
     @NotBlank(message = "标题 title 不能为空")

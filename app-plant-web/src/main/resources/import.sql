@@ -15,6 +15,8 @@ DROP TABLE IF EXISTS `poi_article`;
 
 CREATE TABLE `poi_article` (
   `id`           INT(11)  NOT NULL AUTO_INCREMENT,
+  `status`       INT(11)  NOT NULL DEFAULT 0
+  COMMENT '状态: 0, 初始态; 1, 在线发布; -1 下线隐藏',
   `title`        VARCHAR(512)      DEFAULT NULL,
   `summary`      VARCHAR(255)      DEFAULT NULL,
   `md_content`   LONGTEXT,
