@@ -13,6 +13,8 @@ public class PoiArticle {
     private Integer id;
     @NotBlank(message = "标题 title 不能为空")
     private String title;
+    @NotBlank(message = "标题 title 不能为空")
+    private String summary;
     @NotBlank(message = "正文 content 不能为空")
     private String mdContent;
     private String htmlContent;

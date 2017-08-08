@@ -16,6 +16,7 @@ DROP TABLE IF EXISTS `poi_article`;
 CREATE TABLE `poi_article` (
   `id`           INT(11)  NOT NULL AUTO_INCREMENT,
   `title`        VARCHAR(512)      DEFAULT NULL,
+  `summary`      VARCHAR(255)      DEFAULT NULL,
   `md_content`   LONGTEXT,
   `html_content` LONGTEXT,
   `create_time`  DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,

@@ -10,7 +10,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <link href="/static/favicon.ico" rel="shortcut icon">
     <link href="/static/favicon.ico" rel="apple-touch-icon">
-    <title>开源书屋 | ${article.title}</title>
+    <title>${article.title}</title>
     <link href="http://114.215.28.105/blog.css" rel="stylesheet">
 </head>
 <body>
