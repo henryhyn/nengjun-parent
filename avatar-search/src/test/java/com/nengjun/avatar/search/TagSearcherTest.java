@@ -1,4 +1,4 @@
-package com.nengjun.avatar.utils.search;
+package com.nengjun.avatar.search;
 
 import org.junit.Test;
 

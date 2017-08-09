@@ -16,6 +16,7 @@
     <modules>
         <module>avatar-interface</module>
         <module>avatar-mybatis</module>
+        <module>avatar-search</module>
         <module>avatar-utils</module>
         <module>app-plant-web</module>
         <module>app-plant-dao</module>
