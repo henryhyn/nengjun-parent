@@ -7,6 +7,8 @@ import org.nlpcn.commons.lang.pinyin.Pinyin;
 import java.util.*;
 
 /**
+ * 标签搜索器
+ * Todo: query 分词, 输出打分
  * Created by Henry on 2017/8/9.
  */
 public class TagSearcher {
