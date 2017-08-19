@@ -243,3 +243,23 @@ CREATE TABLE `poi_picture` (
 
 INSERT INTO `poi_picture` VALUES (1, 'FuyDovSaSxq_hJBTXF1smfq9kYEg', 29472, 'image/jpeg', 440, 330, 'ycbcr', NULL);
 INSERT INTO `poi_picture` VALUES (2, 'Flk-wACsCjHFMnyIfiU4plIemilJ', 18682, 'image/jpeg', 420, 323, 'ycbcr', NULL);
+
+DROP TABLE IF EXISTS `poi_shop`;
+
+CREATE TABLE `poi_shop` (
+  `id`          INT(11)  NOT NULL AUTO_INCREMENT,
+  `status`      INT(11)  NOT NULL DEFAULT 1
+  COMMENT '状态: 0, 初始态; 1, 在线发布; -1 下线隐藏',
+  `shop_name`   VARCHAR(512)      DEFAULT NULL,
+  `branch_name` VARCHAR(255)      DEFAULT NULL,
+  `create_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_on_update_time` (`update_time`)
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
+
+INSERT INTO `poi_shop` (shop_name, branch_name) VALUES ('中山公园', '');
+INSERT INTO `poi_shop` (shop_name, branch_name) VALUES ('龙之梦', '中山公园');
+INSERT INTO `poi_shop` (shop_name, branch_name) VALUES ('龙之梦', '虹口足球场');

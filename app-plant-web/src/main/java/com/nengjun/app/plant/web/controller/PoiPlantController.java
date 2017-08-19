@@ -57,6 +57,7 @@ public class PoiPlantController {
             Validate.isRecord(true, bindingResult.getFieldError().getDefaultMessage());
         }
         PoiPlant plant = poiPlantMapper.selectByPrimaryKey(id);
+        Validate.hasRecord("id", id, plant);
         copyProperties(poiPlant, plant);
         return ResultUtil.success(poiPlantMapper.updateByPrimaryKey(plant));
     }
