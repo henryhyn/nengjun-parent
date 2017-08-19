@@ -23,10 +23,11 @@ public class PoiArticleController {
     private PoiArticleMapper poiArticleMapper;
 
     @GetMapping("/articles")
-    Result _index() {
+    public Result _index() {
         PageModel<PoiArticle> articlePageModel = new PageModel<>();
         articlePageModel.setPageAndPageSize(1, 10);
         List<PoiArticle> articleList = poiArticleMapper.selectByPage(articlePageModel);
+        Validate.isEmpty("articleList", articleList);
         articlePageModel.setList(articleList);
         return ResultUtil.success(articlePageModel);
     }
@@ -56,9 +57,10 @@ public class PoiArticleController {
         if (bindingResult.hasErrors()) {
             Validate.isRecord(true, bindingResult.getFieldError().getDefaultMessage());
         }
-        PoiArticle plant = poiArticleMapper.selectByPrimaryKey(id);
-        copyProperties(poiArticle, plant);
-        return ResultUtil.success(poiArticleMapper.updateByPrimaryKey(plant));
+        PoiArticle article = poiArticleMapper.selectByPrimaryKey(id);
+        Validate.hasRecord("id", id, article);
+        copyProperties(poiArticle, article);
+        return ResultUtil.success(poiArticleMapper.updateByPrimaryKey(article));
     }
 
     @DeleteMapping("/articles/{id}")

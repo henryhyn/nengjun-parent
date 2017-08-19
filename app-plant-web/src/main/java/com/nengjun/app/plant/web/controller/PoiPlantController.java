@@ -70,5 +70,6 @@ public class PoiPlantController {
 
     private void copyProperties(PoiPlant poiPlant, PoiPlant plant) {
         plant.setName(poiPlant.getName());
+        plant.setAltName(poiPlant.getAltName());
     }
 }
