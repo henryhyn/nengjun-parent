@@ -2,16 +2,26 @@ package com.nengjun.app.plant.web.controller;
 
 import com.nengjun.app.content.dao.entity.PoiArticle;
 import com.nengjun.app.content.dao.mapper.PoiArticleMapper;
+import com.nengjun.app.shop.dao.entity.PoiTag;
+import com.nengjun.app.shop.dao.mapper.PoiTagMapper;
 import com.nengjun.avatar.face.type.PageModel;
 import com.nengjun.avatar.face.type.Result;
 import com.nengjun.avatar.face.utils.ResultUtil;
 import com.nengjun.avatar.face.utils.Validate;
+import org.apache.commons.lang3.math.NumberUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Henry on 2017/7/19.
@@ -21,6 +31,9 @@ import java.util.List;
 public class PoiArticleController {
     @Autowired
     private PoiArticleMapper poiArticleMapper;
+
+    @Autowired
+    private PoiTagMapper poiTagMapper;
 
     @GetMapping("/articles")
     public Result _index() {
@@ -37,6 +50,24 @@ public class PoiArticleController {
         Validate.idValid("id", id);
         PoiArticle article = poiArticleMapper.selectByPrimaryKey(id);
         Validate.hasRecord("id", id, article);
+        Document document = Jsoup.parse(article.getContent());
+        Elements elements = document.select("p:contains(poiTag#)");
+        List<Integer> tagIdList = new ArrayList<>();
+        Map<Integer, Element> elementMap = new HashMap<>();
+        for (Element element : elements) {
+            Integer tagId = NumberUtils.toInt(element.text().split("#")[1]);
+            tagIdList.add(tagId);
+            elementMap.put(tagId, element);
+        }
+
+        if (!tagIdList.isEmpty()) {
+            List<PoiTag> tagList = poiTagMapper.selectByIds(tagIdList);
+            for (PoiTag tag : tagList) {
+                elementMap.get(tag.getId()).text(tag.getSummary());
+            }
+        }
+
+        article.setContent(document.toString());
         return ResultUtil.success(article);
     }
 
@@ -74,6 +105,6 @@ public class PoiArticleController {
         article.setSummary(poiArticle.getSummary());
         article.setCover(poiArticle.getCover());
         article.setMdContent(poiArticle.getMdContent());
-        article.setHtmlContent(poiArticle.getHtmlContent());
+        article.setContent(poiArticle.getContent());
     }
 }

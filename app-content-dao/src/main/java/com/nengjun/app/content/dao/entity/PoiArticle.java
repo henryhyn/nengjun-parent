@@ -19,7 +19,7 @@ public class PoiArticle {
     @NotBlank(message = "正文 content 不能为空")
     private String cover;
     private String mdContent;
-    private String htmlContent;
+    private String content;
     private Date createTime;
     private Date updateTime;
 }

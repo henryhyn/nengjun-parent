@@ -21,7 +21,7 @@ CREATE TABLE `poi_article` (
   `summary`      VARCHAR(255)      DEFAULT NULL,
   `cover`        VARCHAR(255)      DEFAULT NULL,
   `md_content`   LONGTEXT,
-  `html_content` LONGTEXT,
+  `content` LONGTEXT,
   `create_time`  DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `update_time`  DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
@@ -30,8 +30,8 @@ CREATE TABLE `poi_article` (
   ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
-INSERT INTO `poi_article` (title, html_content) VALUES ('开始写文章啦', '<h2>这是我的第一篇文章!</h2>');
-INSERT INTO `poi_article` (title, html_content) VALUES ('继续写哦', '<h2>这是我的第二篇文章!</h2>');
+INSERT INTO `poi_article` (title, content) VALUES ('开始写文章啦', '<h2>这是我的第一篇文章!</h2>');
+INSERT INTO `poi_article` (title, content) VALUES ('继续写哦', '<h2>这是我的第二篇文章!</h2>');
 
 DROP TABLE IF EXISTS `poi_country`;
 
@@ -263,3 +263,27 @@ CREATE TABLE `poi_shop` (
 INSERT INTO `poi_shop` (shop_name, branch_name) VALUES ('中山公园', '');
 INSERT INTO `poi_shop` (shop_name, branch_name) VALUES ('龙之梦', '中山公园');
 INSERT INTO `poi_shop` (shop_name, branch_name) VALUES ('龙之梦', '虹口足球场');
+
+DROP TABLE IF EXISTS `poi_tag`;
+
+CREATE TABLE `poi_tag` (
+  `id`           INT(11)  NOT NULL AUTO_INCREMENT,
+  `status`       INT(11)  NOT NULL DEFAULT 1
+  COMMENT '状态: 0, 初始态; 1, 在线发布; -1 下线隐藏',
+  `shop_id`      INT(11)           DEFAULT NULL,
+  `tag_type`     VARCHAR(8)        DEFAULT NULL,
+  `tag_sub_type` VARCHAR(8)        DEFAULT NULL,
+  `summary`      VARCHAR(32)       DEFAULT NULL,
+  `content`      TEXT              DEFAULT NULL,
+  `md_content`   TEXT              DEFAULT NULL,
+  `create_time`  DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_time`  DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_on_update_time` (`update_time`)
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4;
+
+INSERT INTO `poi_tag` (shop_id, tag_type, tag_sub_type, summary, content)
+VALUES (1, '名人出没', '名人光顾', '邓超一家人曾一起来游玩', '<p>看这是他们来游玩的照片</p>')
+  , (2, '权威推荐', '媒体推荐', '知名公众号91聚乐曾报道', '<p>看看报道原文吧</p>');
