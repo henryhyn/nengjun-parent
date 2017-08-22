@@ -19,7 +19,7 @@
     <div class="hui-md-card">
         <h2 class="hui-md-header">${article.title}</h2>
 
-        <div class="hui-md-body">${article.htmlContent}</div>
+        <div class="hui-md-body">${article.summary}</div>
         <div class="hui-md-footer">
             <a href="/articles/${article.id}">继续阅读</a>
         </div>
