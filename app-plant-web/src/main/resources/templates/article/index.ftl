@@ -11,7 +11,7 @@
     <link href="/static/favicon.ico" rel="shortcut icon">
     <link href="/static/favicon.ico" rel="apple-touch-icon">
     <title>开源书屋</title>
-    <link href="https://114.215.28.105/blog.css" rel="stylesheet">
+    <link href="https://cdn.kaiyuanshuwu.com/blog.css" rel="stylesheet">
 </head>
 <body>
 <div class="hui-wrapper">

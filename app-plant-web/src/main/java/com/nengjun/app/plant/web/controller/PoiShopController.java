@@ -47,6 +47,7 @@ public class PoiShopController {
         }
         PoiShop shop = new PoiShop();
         copyProperties(poiShop, shop);
+        shop.setStatus(1);
         return ResultUtil.success(poiShopMapper.insert(shop));
     }
 

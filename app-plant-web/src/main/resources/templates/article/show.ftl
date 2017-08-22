@@ -11,7 +11,7 @@
     <link href="/static/favicon.ico" rel="shortcut icon">
     <link href="/static/favicon.ico" rel="apple-touch-icon">
     <title>${article.title}</title>
-    <link href="http://114.215.28.105/blog.css" rel="stylesheet">
+    <link href="https://cdn.kaiyuanshuwu.com/blog.css" rel="stylesheet">
 </head>
 <body>
 <div class="hui-wrapper">
@@ -25,6 +25,6 @@
         </div>
     </div>
 </div>
-<script src="http://114.215.28.105/blog.js"></script>
+<script src="https://cdn.kaiyuanshuwu.com/blog.js"></script>
 </body>
 </html>

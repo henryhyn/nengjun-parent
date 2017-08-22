@@ -32,9 +32,6 @@ public class PoiArticleController {
     @Autowired
     private PoiArticleMapper poiArticleMapper;
 
-    @Autowired
-    private PoiTagMapper poiTagMapper;
-
     @GetMapping("/articles")
     public Result _index() {
         PageModel<PoiArticle> articlePageModel = new PageModel<>();
@@ -50,24 +47,6 @@ public class PoiArticleController {
         Validate.idValid("id", id);
         PoiArticle article = poiArticleMapper.selectByPrimaryKey(id);
         Validate.hasRecord("id", id, article);
-        Document document = Jsoup.parse(article.getContent());
-        Elements elements = document.select("p:contains(poiTag#)");
-        List<Integer> tagIdList = new ArrayList<>();
-        Map<Integer, Element> elementMap = new HashMap<>();
-        for (Element element : elements) {
-            Integer tagId = NumberUtils.toInt(element.text().split("#")[1]);
-            tagIdList.add(tagId);
-            elementMap.put(tagId, element);
-        }
-
-        if (!tagIdList.isEmpty()) {
-            List<PoiTag> tagList = poiTagMapper.selectByIds(tagIdList);
-            for (PoiTag tag : tagList) {
-                elementMap.get(tag.getId()).text(tag.getSummary());
-            }
-        }
-
-        article.setContent(document.toString());
         return ResultUtil.success(article);
     }
 
