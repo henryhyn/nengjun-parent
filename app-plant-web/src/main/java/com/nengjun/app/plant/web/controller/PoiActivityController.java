@@ -74,8 +74,19 @@ public class PoiActivityController {
             }
         }
 
+        taggingClass(document.body());
+
         activity.setContent(document.body().html());
         return ResultUtil.success(activity);
+    }
+
+    private void taggingClass(Element element) {
+        String cls = element.attr("class");
+        String tagName = element.tagName();
+        element.attr("class", String.format("%s_class %s", tagName, cls));
+
+        Elements elements = element.children();
+        elements.forEach(this::taggingClass);
     }
 
     @PostMapping("/activities")

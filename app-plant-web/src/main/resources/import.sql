@@ -30,8 +30,8 @@ CREATE TABLE `poi_article` (
   ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
-INSERT INTO `poi_article` (title, content) VALUES ('开始写文章啦', '<h2>这是我的第一篇文章!</h2>');
-INSERT INTO `poi_article` (title, content) VALUES ('继续写哦', '<h2>这是我的第二篇文章!</h2>');
+INSERT INTO `poi_article` (title, summary, content) VALUES ('开始写文章啦', '', '<h2>这是我的第一篇文章!</h2>');
+INSERT INTO `poi_article` (title, summary, content) VALUES ('继续写哦', '', '<h2>这是我的第二篇文章!</h2>');
 
 DROP TABLE IF EXISTS `poi_country`;
 
