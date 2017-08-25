@@ -291,21 +291,34 @@ VALUES (1, '名人出没', '名人光顾', '邓超一家人曾一起来游玩', 
 DROP TABLE IF EXISTS `poi_activity`;
 
 CREATE TABLE `poi_activity` (
-  `id`          INT(11)  NOT NULL AUTO_INCREMENT,
-  `status`      INT(11)  NOT NULL DEFAULT 1
+  `id`          INT(11)  NOT NULL  AUTO_INCREMENT,
+  `status`      INT(11)  NOT NULL  DEFAULT 1
   COMMENT '状态: 0, 初始态; 1, 在线发布; -1 下线隐藏',
-  `cover`       VARCHAR(255)      DEFAULT NULL,
-  `title`       VARCHAR(512)      DEFAULT NULL,
-  `summary`     VARCHAR(32)       DEFAULT NULL,
-  `content`     TEXT              DEFAULT NULL,
-  `md_content`  TEXT              DEFAULT NULL,
-  `create_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `update_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `cover`       VARCHAR(255)       DEFAULT NULL,
+  `title`       VARCHAR(512)       DEFAULT NULL,
+  `category_id` INT(11)            DEFAULT NULL,
+  `longitude`   DOUBLE             DEFAULT NULL,
+  `latitude`    DOUBLE             DEFAULT NULL,
+  `address`     VARCHAR(255)       DEFAULT NULL,
+  `crossroad`   VARCHAR(255)       DEFAULT NULL,
+  `fee`         DOUBLE             DEFAULT NULL,
+  `time`        DOUBLE             DEFAULT NULL,
+  `length`      DOUBLE             DEFAULT NULL,
+  `route`       VARCHAR(255)       DEFAULT NULL,
+  `route_info`  TEXT               DEFAULT NULL,
+  `summary`     VARCHAR(64)        DEFAULT NULL,
+  `content`     TEXT               DEFAULT NULL,
+  `md_content`  TEXT               DEFAULT NULL,
+  `create_time` DATETIME NOT NULL  DEFAULT CURRENT_TIMESTAMP,
+  `update_time` DATETIME NOT NULL  DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `idx_on_update_time` (`update_time`)
 )
   ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
-INSERT INTO `poi_activity` (title, summary, content, md_content)
-VALUES ('夜晚市区骑行', '苏州河畔的微风, 凌空SOHO的灯光...', '<p>poiTag#1</p>', 'poiTag#1');
+INSERT INTO `poi_activity` (cover, title, category_id, address, crossroad, fee, summary, content, md_content)
+VALUES ('http://oud35cwi4.bkt.clouddn.com/FuyDovSaSxq_hJBTXF1smfq9kYEg', '【城市漫步】初秋, 领略风情万种', 1, '江苏路地铁站 4 号口', '江苏路', 0,
+        '苏州河畔的微风, 凌空SOHO的灯光...', '<p>poiTag#1</p>', 'poiTag#1'),
+  ('http://oud35cwi4.bkt.clouddn.com/Flk-wACsCjHFMnyIfiU4plIemilJ', '【暴走毅行】大海, 我还欠你一个约定', 2, '滴水湖', NULL, 90, NULL,
+   NULL, NULL);

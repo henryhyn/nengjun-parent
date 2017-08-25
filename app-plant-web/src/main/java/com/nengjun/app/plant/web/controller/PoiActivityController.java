@@ -1,5 +1,6 @@
 package com.nengjun.app.plant.web.controller;
 
+import com.alibaba.fastjson.JSONArray;
 import com.nengjun.app.party.dao.entity.PoiActivity;
 import com.nengjun.app.party.dao.mapper.PoiActivityMapper;
 import com.nengjun.app.shop.dao.entity.PoiTag;
@@ -8,12 +9,14 @@ import com.nengjun.avatar.face.type.PageModel;
 import com.nengjun.avatar.face.type.Result;
 import com.nengjun.avatar.face.utils.ResultUtil;
 import com.nengjun.avatar.face.utils.Validate;
+import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -77,7 +80,11 @@ public class PoiActivityController {
         taggingClass(document.body());
 
         activity.setContent(document.body().html());
-        return ResultUtil.success(activity);
+
+        PoiActivityDTO activityDTO = new PoiActivityDTO();
+        BeanUtils.copyProperties(activity, activityDTO);
+        activityDTO.setPointList(JSONArray.parseArray(activity.getRouteInfo(), Point.class));
+        return ResultUtil.success(activityDTO);
     }
 
     private void taggingClass(Element element) {
@@ -90,25 +97,25 @@ public class PoiActivityController {
     }
 
     @PostMapping("/activities")
-    public Result create(@Valid @RequestBody PoiActivity poiActivity, BindingResult bindingResult) {
+    public Result create(@Valid @RequestBody PoiActivityDTO activityDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             Validate.isRecord(true, bindingResult.getFieldError().getDefaultMessage());
         }
         PoiActivity activity = new PoiActivity();
-        copyProperties(poiActivity, activity);
+        copyProperties(activityDTO, activity);
         activity.setStatus(1);
         return ResultUtil.success(poiActivityMapper.insert(activity));
     }
 
     @PutMapping("/activities/{id}")
-    public Result update(@PathVariable("id") Integer id, @Valid @RequestBody PoiActivity poiActivity, BindingResult bindingResult) {
+    public Result update(@PathVariable("id") Integer id, @Valid @RequestBody PoiActivityDTO activityDTO, BindingResult bindingResult) {
         Validate.idValid("id", id);
         if (bindingResult.hasErrors()) {
             Validate.isRecord(true, bindingResult.getFieldError().getDefaultMessage());
         }
         PoiActivity activity = poiActivityMapper.selectByPrimaryKey(id);
         Validate.hasRecord("id", id, activity);
-        copyProperties(poiActivity, activity);
+        copyProperties(activityDTO, activity);
         return ResultUtil.success(poiActivityMapper.updateByPrimaryKey(activity));
     }
 
@@ -118,11 +125,33 @@ public class PoiActivityController {
         return ResultUtil.success(poiActivityMapper.deleteByPrimaryKey(id));
     }
 
-    private void copyProperties(PoiActivity poiActivity, PoiActivity activity) {
-        activity.setCover(poiActivity.getCover());
-        activity.setTitle(poiActivity.getTitle());
-        activity.setSummary(poiActivity.getSummary());
-        activity.setMdContent(poiActivity.getMdContent());
-        activity.setContent(poiActivity.getContent());
+    private void copyProperties(PoiActivityDTO activityDTO, PoiActivity activity) {
+        activity.setCover(activityDTO.getCover());
+        activity.setTitle(activityDTO.getTitle());
+        activity.setCategoryId(activityDTO.getCategoryId());
+        activity.setLongitude(activityDTO.getLongitude());
+        activity.setLatitude(activityDTO.getLatitude());
+        activity.setAddress(activityDTO.getAddress());
+        activity.setCrossroad(activityDTO.getCrossroad());
+        activity.setFee(activityDTO.getFee());
+        activity.setTime(activityDTO.getTime());
+        activity.setLength(activityDTO.getLength());
+        activity.setRoute(activityDTO.getRoute());
+        activity.setRouteInfo(JSONArray.toJSONString(activityDTO.getPointList()));
+        activity.setSummary(activityDTO.getSummary());
+        activity.setMdContent(activityDTO.getMdContent());
+        activity.setContent(activityDTO.getContent());
+    }
+
+    @Data
+    private static class PoiActivityDTO extends PoiActivity {
+        private List<Point> pointList;
+    }
+
+    @Data
+    private static class Point {
+        private Double longitude;
+        private Double latitude;
+        private String title;
     }
 }

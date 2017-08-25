@@ -15,6 +15,16 @@ public class PoiActivity implements Serializable {
     private Integer status;
     private String cover;
     private String title;
+    private Integer categoryId;
+    private Double longitude;
+    private Double latitude;
+    private String address;
+    private String crossroad;
+    private Double fee;
+    private Double time;
+    private Double length;
+    private String route;
+    private String routeInfo;
     private String summary;
     private String mdContent;
     private String content;
