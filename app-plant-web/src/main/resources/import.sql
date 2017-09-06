@@ -322,3 +322,26 @@ VALUES ('http://oud35cwi4.bkt.clouddn.com/FuyDovSaSxq_hJBTXF1smfq9kYEg', '【城
         '苏州河畔的微风, 凌空SOHO的灯光...', '<p>poiTag#1</p>', 'poiTag#1'),
   ('http://oud35cwi4.bkt.clouddn.com/Flk-wACsCjHFMnyIfiU4plIemilJ', '【暴走毅行】大海, 我还欠你一个约定', 2, '滴水湖', NULL, 90, NULL,
    NULL, NULL);
+
+DROP TABLE IF EXISTS `poi_todo`;
+
+CREATE TABLE `poi_todo` (
+  `id`          INT(11)  NOT NULL AUTO_INCREMENT,
+  `status`      INT(11)  NOT NULL DEFAULT '0'
+  COMMENT '状态: 0, 初始态',
+  `importance`  TINYINT(4)        DEFAULT NULL,
+  `emergency`   TINYINT(4)        DEFAULT NULL,
+  `difficulty`  TINYINT(4)        DEFAULT NULL,
+  `name`        VARCHAR(64)       DEFAULT NULL,
+  `description` VARCHAR(512)      DEFAULT NULL,
+  `begin_time`  DATETIME          DEFAULT NULL,
+  `end_time`    DATETIME          DEFAULT NULL,
+  `create_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_on_update_time` (`update_time`)
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
+
+INSERT INTO `poi_todo` (name, description) VALUES ('分页查询', '完善 MyBatis 分页查询插件');

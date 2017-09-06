@@ -23,6 +23,7 @@
         <module>app-content-dao</module>
         <module>app-shop-dao</module>
         <module>app-party-dao</module>
+        <module>app-todo-dao</module>
     </modules>
 
     <properties>
@@ -81,6 +82,11 @@
             <dependency>
                 <groupId>com.nengjun</groupId>
                 <artifactId>app-party-dao</artifactId>
+                <version>0.0.1</version>
+            </dependency>
+            <dependency>
+                <groupId>com.nengjun</groupId>
+                <artifactId>app-todo-dao</artifactId>
                 <version>0.0.1</version>
             </dependency>
 
