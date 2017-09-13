@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -20,9 +21,13 @@ public class ArticleController {
     private PoiArticleMapper poiArticleMapper;
 
     @GetMapping("/")
-    public String _index(Model model) {
+    public String _index(
+            Model model,
+            @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
+            @RequestParam(value = "pageSize", required = false, defaultValue = "20") Integer pageSize
+    ) {
         PageModel<PoiArticle> articlePageModel = new PageModel<>();
-        articlePageModel.setPageAndPageSize(1, 10);
+        articlePageModel.setPageAndPageSize(page, pageSize);
         List<PoiArticle> articleList = poiArticleMapper.selectByPage(articlePageModel);
         articlePageModel.setList(articleList);
         model.addAttribute("data", articlePageModel);

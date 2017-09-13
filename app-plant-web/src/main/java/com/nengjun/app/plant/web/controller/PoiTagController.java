@@ -31,9 +31,12 @@ public class PoiTagController {
     }
 
     @GetMapping("/tags")
-    public Result _index() {
+    public Result _index(
+            @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
+            @RequestParam(value = "pageSize", required = false, defaultValue = "20") Integer pageSize
+    ) {
         PageModel<PoiTag> tagPageModel = new PageModel<>();
-        tagPageModel.setPageAndPageSize(1, 10);
+        tagPageModel.setPageAndPageSize(page, pageSize);
         List<PoiTag> tagList = poiTagMapper.selectByPage(tagPageModel);
         Validate.isEmpty("tagList", tagList);
         tagPageModel.setList(tagList);

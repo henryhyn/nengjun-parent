@@ -23,9 +23,12 @@ public class PoiShopController {
     private PoiShopMapper poiShopMapper;
 
     @GetMapping("/shops")
-    public Result _index() {
+    public Result _index(
+            @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
+            @RequestParam(value = "pageSize", required = false, defaultValue = "20") Integer pageSize
+    ) {
         PageModel<PoiShop> shopPageModel = new PageModel<>();
-        shopPageModel.setPageAndPageSize(1, 10);
+        shopPageModel.setPageAndPageSize(page, pageSize);
         List<PoiShop> shopList = poiShopMapper.selectByPage(shopPageModel);
         Validate.isEmpty("shopList", shopList);
         shopPageModel.setList(shopList);

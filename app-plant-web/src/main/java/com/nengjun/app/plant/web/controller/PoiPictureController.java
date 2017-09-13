@@ -56,9 +56,12 @@ public class PoiPictureController {
     }
 
     @GetMapping("/images")
-    Result _index() {
+    Result _index(
+            @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
+            @RequestParam(value = "pageSize", required = false, defaultValue = "20") Integer pageSize
+    ) {
         PageModel<PoiPicture> picturePageModel = new PageModel<>();
-        picturePageModel.setPageAndPageSize(1, 10);
+        picturePageModel.setPageAndPageSize(page, pageSize);
         List<PoiPicture> pictureList = poiPictureMapper.selectByPage(picturePageModel);
         for (PoiPicture poiPicture : pictureList) {
             poiPicture.setPictureKey(getAbsolutePath(poiPicture.getPictureKey()));

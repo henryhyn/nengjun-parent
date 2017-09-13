@@ -23,9 +23,12 @@ public class PoiPlantController {
     private PoiPlantMapper poiPlantMapper;
 
     @GetMapping("/plants")
-    public Result _index() {
+    public Result _index(
+            @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
+            @RequestParam(value = "pageSize", required = false, defaultValue = "20") Integer pageSize
+    ) {
         PageModel<PoiPlant> plantPageModel = new PageModel<>();
-        plantPageModel.setPageAndPageSize(1, 10);
+        plantPageModel.setPageAndPageSize(page, pageSize);
         List<PoiPlant> plantList = poiPlantMapper.selectByPage(plantPageModel);
         Validate.isEmpty("plantList", plantList);
         plantPageModel.setList(plantList);

@@ -40,9 +40,12 @@ public class PoiActivityController {
     private PoiTagMapper poiTagMapper;
 
     @GetMapping("/activities")
-    public Result _index() {
+    public Result _index(
+            @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
+            @RequestParam(value = "pageSize", required = false, defaultValue = "20") Integer pageSize
+    ) {
         PageModel<PoiActivity> activityPageModel = new PageModel<>();
-        activityPageModel.setPageAndPageSize(1, 10);
+        activityPageModel.setPageAndPageSize(page, pageSize);
         List<PoiActivity> activityList = poiActivityMapper.selectByPage(activityPageModel);
         Validate.isEmpty("activityList", activityList);
         activityPageModel.setList(activityList);

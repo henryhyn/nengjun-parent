@@ -23,9 +23,12 @@ public class PoiTodoController {
     private PoiTodoMapper poiTodoMapper;
 
     @GetMapping("/todos")
-    public Result _index() {
+    public Result _index(
+            @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
+            @RequestParam(value = "pageSize", required = false, defaultValue = "20") Integer pageSize
+    ) {
         PageModel<PoiTodo> todoPageModel = new PageModel<>();
-        todoPageModel.setPageAndPageSize(1, 10);
+        todoPageModel.setPageAndPageSize(page, pageSize);
         List<PoiTodo> todoList = poiTodoMapper.selectByPage(todoPageModel);
         Validate.isEmpty("todoList", todoList);
         todoPageModel.setList(todoList);

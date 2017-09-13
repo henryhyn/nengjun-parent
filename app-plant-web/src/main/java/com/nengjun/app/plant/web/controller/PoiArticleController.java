@@ -23,9 +23,12 @@ public class PoiArticleController {
     private PoiArticleMapper poiArticleMapper;
 
     @GetMapping("/articles")
-    public Result _index() {
+    public Result _index(
+            @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
+            @RequestParam(value = "pageSize", required = false, defaultValue = "20") Integer pageSize
+    ) {
         PageModel<PoiArticle> articlePageModel = new PageModel<>();
-        articlePageModel.setPageAndPageSize(1, 10);
+        articlePageModel.setPageAndPageSize(page, pageSize);
         List<PoiArticle> articleList = poiArticleMapper.selectByPage(articlePageModel);
         Validate.isEmpty("articleList", articleList);
         articlePageModel.setList(articleList);
