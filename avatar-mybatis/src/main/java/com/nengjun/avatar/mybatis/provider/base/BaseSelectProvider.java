@@ -36,8 +36,8 @@ public class BaseSelectProvider extends MapperTemplate {
         Class<?> entityClass = getEntityClass(ms);
         setResultType(ms, entityClass);
         return new SQL() {{
-            SELECT("*");
-            FROM(tableName(entityClass));
+            SELECT("a.*");
+            FROM(tableName(entityClass) + " a");
         }}.toString();
     }
 }

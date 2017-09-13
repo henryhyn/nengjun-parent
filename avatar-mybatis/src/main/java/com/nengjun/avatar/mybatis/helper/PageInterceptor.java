@@ -56,7 +56,18 @@ public class PageInterceptor implements Interceptor {
     }
 
     private MappedStatement getPageMs(MappedStatement ms, BoundSql boundSql, Integer offset, Integer pageSize) {
-        String pageSql = String.format("%s limit %d, %d", boundSql.getSql(), offset, pageSize);
+        String sql = boundSql.getSql();
+        Statement stmt = null;
+        try {
+            stmt = CCJSqlParserUtil.parse(sql);
+        } catch (JSQLParserException e) {
+            e.printStackTrace();
+        }
+        Select select = (Select) stmt;
+        PlainSelect countBody = ((PlainSelect) select.getSelectBody());
+        countBody.setSelectItems(Collections.singletonList(new SelectExpressionItem(new Column("id"))));
+        select.setSelectBody(countBody);
+        String pageSql = String.format("%s inner join (%s limit %d, %d) b where a.id = b.id", sql, select, offset, pageSize);
         BoundSql newBoundSql = new BoundSql(ms.getConfiguration(), pageSql, null, null);
         MappedStatement.Builder builder = new MappedStatement.Builder(ms.getConfiguration(), ms.getId(), new BoundSqlSqlSource(newBoundSql), ms.getSqlCommandType());
         builder.resultMaps(ms.getResultMaps());
