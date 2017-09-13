@@ -19,7 +19,7 @@ public class IdsProvider extends MapperTemplate {
         return new SQL() {{
             SELECT("*");
             FROM(tableName(entityClass));
-            WHERE("id in <foreach item='item' collection='collection' open='(' separator=',' close=')'>#{item}</foreach>");
+            WHERE("id IN <foreach item='item' collection='collection' open='(' separator=',' close=')'>#{item}</foreach>");
         }}.toString();
     }
 }

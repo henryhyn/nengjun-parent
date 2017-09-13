@@ -53,9 +53,9 @@ public class PageInterceptor implements Interceptor {
 
         List<ParameterMapping> parameterMappings = new ArrayList<>();
         StringBuilder sb = new StringBuilder(boundSql.getSql());
-        sb.append(" where");
+        sb.append(" WHERE");
         for (Map.Entry<String, Object> entry : conditions.entrySet()) {
-            sb.append(String.format(" (%s) and", entry.getKey()));
+            sb.append(String.format(" (%s) AND", entry.getKey()));
             ParameterMapping parameterMapping = new ParameterMapping.Builder(ms.getConfiguration(), entry.getKey(), Object.class).build();
             parameterMappings.add(parameterMapping);
         }
@@ -67,8 +67,8 @@ public class PageInterceptor implements Interceptor {
         String sql = boundSql.getSql();
         String whereSql = whereBoundSql.getSql();
         String idSql = whereSql.replaceAll("\r?\n", " ").replaceFirst("SELECT.+FROM", "SELECT id FROM");
-        String orderString = StringUtils.isBlank(orders) ? "" : " order by " + orders.replace('.', ' ').replace(",", ", ");
-        String pageSql = String.format("%s inner join (%s %s limit %d, %d) b on a.id = b.id %s", sql, idSql, orderString, offset, pageSize, orderString);
+        String orderString = StringUtils.isBlank(orders) ? "" : " ORDER BY " + orders.replace('.', ' ').replace(",", ", ");
+        String pageSql = String.format("%s INNER JOIN (%s %s LIMIT %d, %d) b ON a.id = b.id %s", sql, idSql, orderString, offset, pageSize, orderString);
         BoundSql newBoundSql = new BoundSql(ms.getConfiguration(), pageSql, whereBoundSql.getParameterMappings(), whereBoundSql.getParameterObject());
         MappedStatement.Builder builder = new MappedStatement.Builder(ms.getConfiguration(), ms.getId(), new BoundSqlSqlSource(newBoundSql), ms.getSqlCommandType());
         builder.resultMaps(ms.getResultMaps());
