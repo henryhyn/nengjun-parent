@@ -19,18 +19,12 @@ import java.util.Properties;
  */
 @Intercepts({@Signature(type = Executor.class, method = "query", args = {MappedStatement.class, Object.class, RowBounds.class, ResultHandler.class})})
 public class PageInterceptor implements Interceptor {
-    private static int MAPPED_STATEMENT_INDEX = 0;
-    private static int PARAMETER_INDEX = 1;
-    private static int ROWBOUNDS_INDEX = 2;
-    private static int RESULT_HANDLER_INDEX = 3;
-
     @Override
     public Object intercept(Invocation invocation) throws Throwable {
         Object[] args = invocation.getArgs();
-        MappedStatement ms = (MappedStatement) args[MAPPED_STATEMENT_INDEX];
-        Object parameter = args[PARAMETER_INDEX];
-        RowBounds rowBounds = (RowBounds) args[ROWBOUNDS_INDEX];
-        ResultHandler resultHandler = (ResultHandler) args[RESULT_HANDLER_INDEX];
+        MappedStatement ms = (MappedStatement) args[0];
+        Object parameter = args[1];
+        ResultHandler resultHandler = (ResultHandler) args[3];
         if (!(parameter instanceof PageModel<?>)) {
             return invocation.proceed();
         }
@@ -47,8 +41,8 @@ public class PageInterceptor implements Interceptor {
         pageModel.setTotal(total);
 
         // 生成分页 SQL 语句
-        args[MAPPED_STATEMENT_INDEX] = getPageMs(ms, whereBoundSql, pageModel.getOrders(), pageModel.getOffset(), pageModel.getPageSize());
-        args[PARAMETER_INDEX] = whereBoundSql.getParameterObject();
+        args[0] = getPageMs(ms, boundSql, whereBoundSql, pageModel.getOrders(), pageModel.getOffset(), pageModel.getPageSize());
+        args[1] = whereBoundSql.getParameterObject();
         return invocation.proceed();
     }
 
@@ -69,27 +63,26 @@ public class PageInterceptor implements Interceptor {
         return new BoundSql(ms.getConfiguration(), sb.toString(), parameterMappings, conditions);
     }
 
-    private MappedStatement getPageMs(MappedStatement ms, BoundSql boundSql, String orders, Integer offset, Integer pageSize) {
+    private MappedStatement getPageMs(MappedStatement ms, BoundSql boundSql, BoundSql whereBoundSql, String orders, Integer offset, Integer pageSize) {
         String sql = boundSql.getSql();
-        StringBuilder sb = new StringBuilder(sql);
-        if (StringUtils.isNotBlank(orders)) {
-            sb.append(String.format(" order by %s", orders.replace('.', ' ').replace(",", ", ")));
-        }
-        sb.append(String.format(" limit %d, %d", offset, pageSize));
-        BoundSql newBoundSql = new BoundSql(ms.getConfiguration(), sb.toString(), boundSql.getParameterMappings(), boundSql.getParameterObject());
+        String whereSql = whereBoundSql.getSql();
+        String idSql = whereSql.replaceAll("\r?\n", " ").replaceFirst("SELECT.+FROM", "SELECT id FROM");
+        String orderString = StringUtils.isBlank(orders) ? "" : " order by " + orders.replace('.', ' ').replace(",", ", ");
+        String pageSql = String.format("%s inner join (%s %s limit %d, %d) b on a.id = b.id %s", sql, idSql, orderString, offset, pageSize, orderString);
+        BoundSql newBoundSql = new BoundSql(ms.getConfiguration(), pageSql, whereBoundSql.getParameterMappings(), whereBoundSql.getParameterObject());
         MappedStatement.Builder builder = new MappedStatement.Builder(ms.getConfiguration(), ms.getId(), new BoundSqlSqlSource(newBoundSql), ms.getSqlCommandType());
         builder.resultMaps(ms.getResultMaps());
         return builder.build();
     }
 
-    private MappedStatement getCountMs(MappedStatement ms, BoundSql boundSql) {
-        String sql = boundSql.getSql();
-        String countSql = sql.replaceAll("\r?\n", " ").replaceFirst("SELECT.+FROM", "SELECT count(1) FROM");
-        BoundSql countBoundSql = new BoundSql(ms.getConfiguration(), countSql, boundSql.getParameterMappings(), boundSql.getParameterObject());
+    private MappedStatement getCountMs(MappedStatement ms, BoundSql whereBoundSql) {
+        String whereSql = whereBoundSql.getSql();
+        String countSql = whereSql.replaceAll("\r?\n", " ").replaceFirst("SELECT.+FROM", "SELECT count(1) FROM");
+        BoundSql countBoundSql = new BoundSql(ms.getConfiguration(), countSql, whereBoundSql.getParameterMappings(), whereBoundSql.getParameterObject());
         String msId = String.format("%sCount", ms.getId());
         MappedStatement.Builder builder = new MappedStatement.Builder(ms.getConfiguration(), msId, new BoundSqlSqlSource(countBoundSql), ms.getSqlCommandType());
-        List<ResultMap> resultMaps = new ArrayList<ResultMap>();
-        ResultMap resultMap = new ResultMap.Builder(ms.getConfiguration(), ms.getId(), Long.class, new ArrayList<ResultMapping>(0)).build();
+        List<ResultMap> resultMaps = new ArrayList<>();
+        ResultMap resultMap = new ResultMap.Builder(ms.getConfiguration(), ms.getId(), Long.class, new ArrayList<>(0)).build();
         resultMaps.add(resultMap);
         builder.resultMaps(resultMaps);
         return builder.build();
