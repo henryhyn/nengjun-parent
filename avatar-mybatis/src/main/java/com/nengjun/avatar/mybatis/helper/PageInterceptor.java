@@ -33,15 +33,15 @@ public class PageInterceptor implements Interceptor {
     @Override
     public Object intercept(Invocation invocation) throws Throwable {
         Object[] args = invocation.getArgs();
+        MappedStatement ms = (MappedStatement) args[MAPPED_STATEMENT_INDEX];
         Object parameter = args[PARAMETER_INDEX];
+        RowBounds rowBounds = (RowBounds) args[ROWBOUNDS_INDEX];
+        ResultHandler resultHandler = (ResultHandler) args[RESULT_HANDLER_INDEX];
         if (!(parameter instanceof PageModel<?>)) {
             return invocation.proceed();
         }
 
         PageModel<?> pageModel = (PageModel<?>) parameter;
-        MappedStatement ms = (MappedStatement) args[MAPPED_STATEMENT_INDEX];
-        RowBounds rowBounds = (RowBounds) args[ROWBOUNDS_INDEX];
-        ResultHandler resultHandler = (ResultHandler) args[RESULT_HANDLER_INDEX];
         Executor executor = (Executor) invocation.getTarget();
         BoundSql boundSql = ms.getBoundSql(parameter);
 
