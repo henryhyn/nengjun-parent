@@ -25,40 +25,46 @@ import java.util.Properties;
  */
 @Intercepts({@Signature(type = Executor.class, method = "query", args = {MappedStatement.class, Object.class, RowBounds.class, ResultHandler.class})})
 public class PageInterceptor implements Interceptor {
+    private static int MAPPED_STATEMENT_INDEX = 0;
+    private static int PARAMETER_INDEX = 1;
+    private static int ROWBOUNDS_INDEX = 2;
+    private static int RESULT_HANDLER_INDEX = 3;
+
     @Override
     public Object intercept(Invocation invocation) throws Throwable {
         Object[] args = invocation.getArgs();
-        Object obj = args[1];
-        if (!(obj instanceof PageModel<?>)) {
+        Object parameter = args[PARAMETER_INDEX];
+        if (!(parameter instanceof PageModel<?>)) {
             return invocation.proceed();
         }
 
-        PageModel<?> pageModel = (PageModel<?>) obj;
-        MappedStatement ms = (MappedStatement) args[0];
-        RowBounds rowBounds = (RowBounds) args[2];
-        ResultHandler resultHandler = (ResultHandler) args[3];
+        PageModel<?> pageModel = (PageModel<?>) parameter;
+        MappedStatement ms = (MappedStatement) args[MAPPED_STATEMENT_INDEX];
+        RowBounds rowBounds = (RowBounds) args[ROWBOUNDS_INDEX];
+        ResultHandler resultHandler = (ResultHandler) args[RESULT_HANDLER_INDEX];
         Executor executor = (Executor) invocation.getTarget();
-        BoundSql boundSql = ms.getBoundSql(pageModel.getConditions());
+        BoundSql boundSql = ms.getBoundSql(parameter);
 
         // 计算总的行数
-        MappedStatement countMs = getCountMs(ms, ms.getId() + "Count");
-        Long total = executeCount(executor, countMs, new Object(), boundSql, rowBounds, resultHandler);
+        MappedStatement countMs = getCountMs(ms);
+        Long total = executeCount(executor, countMs, new Object(), boundSql, resultHandler);
         pageModel.setTotal(total);
 
         // 生成分页 SQL 语句
-        args[0] = getPageMs(ms, obj, pageModel.getOffset(), pageModel.getPageSize());
+        args[MAPPED_STATEMENT_INDEX] = getPageMs(ms, boundSql, pageModel.getOffset(), pageModel.getPageSize());
         return invocation.proceed();
     }
 
-    private MappedStatement getPageMs(MappedStatement ms, Object obj, Integer offset, Integer pageSize) {
-        String pageSql = ms.getBoundSql(obj).getSql() + String.format(" limit %d, %d", offset, pageSize);
+    private MappedStatement getPageMs(MappedStatement ms, BoundSql boundSql, Integer offset, Integer pageSize) {
+        String pageSql = String.format("%s limit %d, %d", boundSql.getSql(), offset, pageSize);
         BoundSql newBoundSql = new BoundSql(ms.getConfiguration(), pageSql, null, null);
         MappedStatement.Builder builder = new MappedStatement.Builder(ms.getConfiguration(), ms.getId(), new BoundSqlSqlSource(newBoundSql), ms.getSqlCommandType());
         builder.resultMaps(ms.getResultMaps());
         return builder.build();
     }
 
-    private MappedStatement getCountMs(MappedStatement ms, String msId) {
+    private MappedStatement getCountMs(MappedStatement ms) {
+        String msId = String.format("%sCount", ms.getId());
         MappedStatement.Builder builder = new MappedStatement.Builder(ms.getConfiguration(), msId, ms.getSqlSource(), ms.getSqlCommandType());
         List<ResultMap> resultMaps = new ArrayList<ResultMap>();
         ResultMap resultMap = new ResultMap.Builder(ms.getConfiguration(), ms.getId(), Long.class, new ArrayList<ResultMapping>(0)).build();
@@ -67,7 +73,7 @@ public class PageInterceptor implements Interceptor {
         return builder.build();
     }
 
-    private Long executeCount(Executor executor, MappedStatement countMs, Object parameter, BoundSql boundSql, RowBounds rowBounds, ResultHandler resultHandler) {
+    private Long executeCount(Executor executor, MappedStatement countMs, Object parameter, BoundSql boundSql, ResultHandler resultHandler) {
         String sql = boundSql.getSql();
         Statement stmt = null;
         try {
