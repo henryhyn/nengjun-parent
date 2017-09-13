@@ -8,6 +8,7 @@ import net.sf.jsqlparser.statement.Statement;
 import net.sf.jsqlparser.statement.select.PlainSelect;
 import net.sf.jsqlparser.statement.select.Select;
 import net.sf.jsqlparser.statement.select.SelectExpressionItem;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.mapping.*;
 import org.apache.ibatis.plugin.*;
@@ -42,16 +43,16 @@ public class PageInterceptor implements Interceptor {
         Executor executor = (Executor) invocation.getTarget();
         BoundSql boundSql = ms.getBoundSql(null);
 
-        BoundSql newBoundSql = getWhereString(ms, boundSql, pageModel.getConditions());
+        BoundSql whereBoundSql = getWhereString(ms, boundSql, pageModel.getConditions());
 
         // 计算总的行数
-        MappedStatement countMs = getCountMs(ms, newBoundSql);
-        Long total = executeCount(executor, countMs, newBoundSql.getParameterObject(), resultHandler);
+        MappedStatement countMs = getCountMs(ms, whereBoundSql);
+        Long total = executeCount(executor, countMs, whereBoundSql.getParameterObject(), resultHandler);
         pageModel.setTotal(total);
 
         // 生成分页 SQL 语句
-        args[MAPPED_STATEMENT_INDEX] = getPageMs(ms, newBoundSql, pageModel.getOffset(), pageModel.getPageSize());
-        args[PARAMETER_INDEX] = newBoundSql.getParameterObject();
+        args[MAPPED_STATEMENT_INDEX] = getPageMs(ms, whereBoundSql, pageModel.getOrders(), pageModel.getOffset(), pageModel.getPageSize());
+        args[PARAMETER_INDEX] = whereBoundSql.getParameterObject();
         return invocation.proceed();
     }
 
@@ -68,25 +69,17 @@ public class PageInterceptor implements Interceptor {
             ParameterMapping parameterMapping = new ParameterMapping.Builder(ms.getConfiguration(), entry.getKey(), Object.class).build();
             parameterMappings.add(parameterMapping);
         }
-        sb.delete(sb.length() - 3, sb.length());
+        sb.delete(sb.length() - 4, sb.length());
         return new BoundSql(ms.getConfiguration(), sb.toString(), parameterMappings, conditions);
     }
 
-    private MappedStatement getPageMs(MappedStatement ms, BoundSql boundSql, Integer offset, Integer pageSize) {
-        String sql = boundSql.getSql();
-        Statement stmt = null;
-        try {
-            stmt = CCJSqlParserUtil.parse(sql);
-        } catch (JSQLParserException e) {
-            e.printStackTrace();
+    private MappedStatement getPageMs(MappedStatement ms, BoundSql boundSql, String orders, Integer offset, Integer pageSize) {
+        StringBuilder sb = new StringBuilder(boundSql.getSql());
+        if (StringUtils.isNotBlank(orders)) {
+            sb.append(String.format(" order by %s", orders.replace('.', ' ')));
         }
-        Select select = (Select) stmt;
-        PlainSelect countBody = ((PlainSelect) select.getSelectBody());
-        countBody.setSelectItems(Collections.singletonList(new SelectExpressionItem(new Column("id"))));
-        select.setSelectBody(countBody);
-//        String pageSql = String.format("%s inner join (%s limit %d, %d) b where a.id = b.id", sql, select, offset, pageSize);
-        String pageSql = String.format("%s limit %d, %d", sql, offset, pageSize);
-        BoundSql newBoundSql = new BoundSql(ms.getConfiguration(), pageSql, boundSql.getParameterMappings(), boundSql.getParameterObject());
+        sb.append(String.format(" limit %d, %d", offset, pageSize));
+        BoundSql newBoundSql = new BoundSql(ms.getConfiguration(), sb.toString(), boundSql.getParameterMappings(), boundSql.getParameterObject());
         MappedStatement.Builder builder = new MappedStatement.Builder(ms.getConfiguration(), ms.getId(), new BoundSqlSqlSource(newBoundSql), ms.getSqlCommandType());
         builder.resultMaps(ms.getResultMaps());
         return builder.build();
