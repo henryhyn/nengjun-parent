@@ -46,8 +46,8 @@ public class PageInterceptor implements Interceptor {
         BoundSql boundSql = ms.getBoundSql(parameter);
 
         // 计算总的行数
-        MappedStatement countMs = getCountMs(ms);
-        Long total = executeCount(executor, countMs, new Object(), boundSql, resultHandler);
+        MappedStatement countMs = getCountMs(ms, boundSql);
+        Long total = executeCount(executor, countMs, resultHandler);
         pageModel.setTotal(total);
 
         // 生成分页 SQL 语句
@@ -68,23 +68,13 @@ public class PageInterceptor implements Interceptor {
         countBody.setSelectItems(Collections.singletonList(new SelectExpressionItem(new Column("id"))));
         select.setSelectBody(countBody);
         String pageSql = String.format("%s inner join (%s limit %d, %d) b where a.id = b.id", sql, select, offset, pageSize);
-        BoundSql newBoundSql = new BoundSql(ms.getConfiguration(), pageSql, null, null);
+        BoundSql newBoundSql = new BoundSql(ms.getConfiguration(), pageSql, boundSql.getParameterMappings(), boundSql.getParameterObject());
         MappedStatement.Builder builder = new MappedStatement.Builder(ms.getConfiguration(), ms.getId(), new BoundSqlSqlSource(newBoundSql), ms.getSqlCommandType());
         builder.resultMaps(ms.getResultMaps());
         return builder.build();
     }
 
-    private MappedStatement getCountMs(MappedStatement ms) {
-        String msId = String.format("%sCount", ms.getId());
-        MappedStatement.Builder builder = new MappedStatement.Builder(ms.getConfiguration(), msId, ms.getSqlSource(), ms.getSqlCommandType());
-        List<ResultMap> resultMaps = new ArrayList<ResultMap>();
-        ResultMap resultMap = new ResultMap.Builder(ms.getConfiguration(), ms.getId(), Long.class, new ArrayList<ResultMapping>(0)).build();
-        resultMaps.add(resultMap);
-        builder.resultMaps(resultMaps);
-        return builder.build();
-    }
-
-    private Long executeCount(Executor executor, MappedStatement countMs, Object parameter, BoundSql boundSql, ResultHandler resultHandler) {
+    private MappedStatement getCountMs(MappedStatement ms, BoundSql boundSql) {
         String sql = boundSql.getSql();
         Statement stmt = null;
         try {
@@ -97,10 +87,20 @@ public class PageInterceptor implements Interceptor {
         countBody.setSelectItems(Collections.singletonList(new SelectExpressionItem(new Column("count(1)"))));
         select.setSelectBody(countBody);
         String countSql = select.toString();
-        BoundSql countBoundSql = new BoundSql(countMs.getConfiguration(), countSql, boundSql.getParameterMappings(), parameter);
+        BoundSql countBoundSql = new BoundSql(ms.getConfiguration(), countSql, boundSql.getParameterMappings(), boundSql.getParameterObject());
+        String msId = String.format("%sCount", ms.getId());
+        MappedStatement.Builder builder = new MappedStatement.Builder(ms.getConfiguration(), msId, new BoundSqlSqlSource(countBoundSql), ms.getSqlCommandType());
+        List<ResultMap> resultMaps = new ArrayList<ResultMap>();
+        ResultMap resultMap = new ResultMap.Builder(ms.getConfiguration(), ms.getId(), Long.class, new ArrayList<ResultMapping>(0)).build();
+        resultMaps.add(resultMap);
+        builder.resultMaps(resultMaps);
+        return builder.build();
+    }
+
+    private Long executeCount(Executor executor, MappedStatement countMs, ResultHandler resultHandler) {
         Object countResultList = null;
         try {
-            countResultList = executor.query(countMs, parameter, RowBounds.DEFAULT, resultHandler, null, countBoundSql);
+            countResultList = executor.query(countMs, null, RowBounds.DEFAULT, resultHandler);
         } catch (SQLException e) {
             e.printStackTrace();
         }
