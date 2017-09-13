@@ -9,10 +9,7 @@ import net.sf.jsqlparser.statement.select.PlainSelect;
 import net.sf.jsqlparser.statement.select.Select;
 import net.sf.jsqlparser.statement.select.SelectExpressionItem;
 import org.apache.ibatis.executor.Executor;
-import org.apache.ibatis.mapping.BoundSql;
-import org.apache.ibatis.mapping.MappedStatement;
-import org.apache.ibatis.mapping.ResultMap;
-import org.apache.ibatis.mapping.ResultMapping;
+import org.apache.ibatis.mapping.*;
 import org.apache.ibatis.plugin.*;
 import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
@@ -49,7 +46,16 @@ public class PageInterceptor implements Interceptor {
         pageModel.setTotal(total);
 
         // 生成分页 SQL 语句
+        args[0] = getPageMs(ms, obj, pageModel.getOffset(), pageModel.getPageSize());
         return invocation.proceed();
+    }
+
+    private MappedStatement getPageMs(MappedStatement ms, Object obj, Integer offset, Integer pageSize) {
+        String pageSql = ms.getBoundSql(obj).getSql() + String.format(" limit %d, %d", offset, pageSize);
+        BoundSql newBoundSql = new BoundSql(ms.getConfiguration(), pageSql, null, null);
+        MappedStatement.Builder builder = new MappedStatement.Builder(ms.getConfiguration(), ms.getId(), new BoundSqlSqlSource(newBoundSql), ms.getSqlCommandType());
+        builder.resultMaps(ms.getResultMaps());
+        return builder.build();
     }
 
     private MappedStatement getCountMs(MappedStatement ms, String msId) {
@@ -92,5 +98,18 @@ public class PageInterceptor implements Interceptor {
     @Override
     public void setProperties(Properties properties) {
 
+    }
+
+    private static class BoundSqlSqlSource implements SqlSource {
+        private BoundSql boundSql;
+
+        public BoundSqlSqlSource(BoundSql boundSql) {
+            this.boundSql = boundSql;
+        }
+
+        @Override
+        public BoundSql getBoundSql(Object o) {
+            return boundSql;
+        }
     }
 }
