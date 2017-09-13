@@ -55,6 +55,8 @@ public class PoiPlantMapperTest extends AbstractTest {
 
         PageModel<PoiCountry> countryPageModel = new PageModel<>();
         countryPageModel.setPageAndPageSize(2, 10);
+        countryPageModel.addCondition("id between 137 and ?", 153);
+        countryPageModel.setOrders("countrycode.desc,id.asc");
         List<PoiCountry> countryList = poiCountryMapper.selectByPage(countryPageModel);
         countryPageModel.setList(countryList);
         System.out.println(countryPageModel);

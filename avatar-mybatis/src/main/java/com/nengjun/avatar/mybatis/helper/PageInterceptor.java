@@ -1,13 +1,6 @@
 package com.nengjun.avatar.mybatis.helper;
 
 import com.nengjun.avatar.face.type.PageModel;
-import net.sf.jsqlparser.JSQLParserException;
-import net.sf.jsqlparser.parser.CCJSqlParserUtil;
-import net.sf.jsqlparser.schema.Column;
-import net.sf.jsqlparser.statement.Statement;
-import net.sf.jsqlparser.statement.select.PlainSelect;
-import net.sf.jsqlparser.statement.select.Select;
-import net.sf.jsqlparser.statement.select.SelectExpressionItem;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.mapping.*;
@@ -16,7 +9,10 @@ import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
 
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 
 /**
  * Created by Henry on 2017/7/18.
@@ -74,9 +70,10 @@ public class PageInterceptor implements Interceptor {
     }
 
     private MappedStatement getPageMs(MappedStatement ms, BoundSql boundSql, String orders, Integer offset, Integer pageSize) {
-        StringBuilder sb = new StringBuilder(boundSql.getSql());
+        String sql = boundSql.getSql();
+        StringBuilder sb = new StringBuilder(sql);
         if (StringUtils.isNotBlank(orders)) {
-            sb.append(String.format(" order by %s", orders.replace('.', ' ')));
+            sb.append(String.format(" order by %s", orders.replace('.', ' ').replace(",", ", ")));
         }
         sb.append(String.format(" limit %d, %d", offset, pageSize));
         BoundSql newBoundSql = new BoundSql(ms.getConfiguration(), sb.toString(), boundSql.getParameterMappings(), boundSql.getParameterObject());
@@ -87,17 +84,7 @@ public class PageInterceptor implements Interceptor {
 
     private MappedStatement getCountMs(MappedStatement ms, BoundSql boundSql) {
         String sql = boundSql.getSql();
-        Statement stmt = null;
-        try {
-            stmt = CCJSqlParserUtil.parse(sql);
-        } catch (JSQLParserException e) {
-            e.printStackTrace();
-        }
-        Select select = (Select) stmt;
-        PlainSelect countBody = ((PlainSelect) select.getSelectBody());
-        countBody.setSelectItems(Collections.singletonList(new SelectExpressionItem(new Column("count(1)"))));
-        select.setSelectBody(countBody);
-        String countSql = select.toString();
+        String countSql = sql.replaceAll("\r?\n", " ").replaceFirst("SELECT.+FROM", "SELECT count(1) FROM");
         BoundSql countBoundSql = new BoundSql(ms.getConfiguration(), countSql, boundSql.getParameterMappings(), boundSql.getParameterObject());
         String msId = String.format("%sCount", ms.getId());
         MappedStatement.Builder builder = new MappedStatement.Builder(ms.getConfiguration(), msId, new BoundSqlSqlSource(countBoundSql), ms.getSqlCommandType());
