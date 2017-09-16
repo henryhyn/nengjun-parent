@@ -17,6 +17,7 @@
         <module>avatar-interface</module>
         <module>avatar-mybatis</module>
         <module>avatar-search</module>
+        <module>avatar-weixin</module>
         <module>avatar-utils</module>
         <module>app-plant-web</module>
         <module>app-plant-dao</module>
@@ -24,6 +25,7 @@
         <module>app-shop-dao</module>
         <module>app-party-dao</module>
         <module>app-todo-dao</module>
+        <module>app-user-dao</module>
     </modules>
 
     <properties>
@@ -57,6 +59,11 @@
             <dependency>
                 <groupId>com.nengjun</groupId>
                 <artifactId>avatar-mybatis</artifactId>
+                <version>0.0.1</version>
+            </dependency>
+            <dependency>
+                <groupId>com.nengjun</groupId>
+                <artifactId>avatar-weixin</artifactId>
                 <version>0.0.1</version>
             </dependency>
             <dependency>

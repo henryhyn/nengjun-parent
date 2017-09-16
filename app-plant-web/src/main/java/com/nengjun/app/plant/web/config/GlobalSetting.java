@@ -12,4 +12,6 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "globalSetting")
 public class GlobalSetting {
     private String env;
+    private String wxAppId;
+    private String wxSecret;
 }

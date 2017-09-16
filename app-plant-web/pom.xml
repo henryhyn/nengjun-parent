@@ -43,6 +43,10 @@
         </dependency>
         <dependency>
             <groupId>com.nengjun</groupId>
+            <artifactId>avatar-weixin</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.nengjun</groupId>
             <artifactId>app-plant-dao</artifactId>
         </dependency>
         <dependency>

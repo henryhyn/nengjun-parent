@@ -345,3 +345,26 @@ CREATE TABLE `poi_todo` (
   DEFAULT CHARSET = utf8;
 
 INSERT INTO `poi_todo` (name, description) VALUES ('分页查询', '完善 MyBatis 分页查询插件');
+
+DROP TABLE IF EXISTS `poi_user`;
+
+CREATE TABLE `poi_user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `openid` varchar(32) NOT NULL,
+  `phone1` varchar(16) DEFAULT NULL,
+  `phone2` varchar(16) DEFAULT NULL,
+  `nick_name` varchar(64) DEFAULT NULL,
+  `gender` tinyint(4) DEFAULT NULL,
+  `language` varchar(32) DEFAULT NULL,
+  `city` varchar(32) DEFAULT NULL,
+  `province` varchar(32) DEFAULT NULL,
+  `country` varchar(32) DEFAULT NULL,
+  `avatar_url` varchar(512) DEFAULT NULL,
+  `session_key` varchar(32) DEFAULT NULL,
+  `expires_time` bigint(20) DEFAULT NULL,
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `udx_on_openid` (`openid`),
+  KEY `idx_on_update_time` (`update_time`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

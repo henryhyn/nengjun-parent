@@ -1,3 +1,6 @@
+globalSetting:
+  wxAppId: wx22c1e6e600477cb4
+  wxSecret: 61679e0a54a753c7c9cb10ff826f39cb
 spring:
   profiles:
     active: dev
