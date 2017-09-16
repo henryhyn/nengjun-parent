@@ -371,4 +371,4 @@ CREATE TABLE `poi_user` (
   KEY `idx_on_update_time` (`update_time`)
 )
   ENGINE = InnoDB
-  DEFAULT CHARSET = utf8;
+  DEFAULT CHARSET = utf8mb4;

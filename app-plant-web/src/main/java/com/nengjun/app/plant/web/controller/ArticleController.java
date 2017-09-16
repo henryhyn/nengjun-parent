@@ -29,6 +29,10 @@ public class ArticleController {
         PageModel<PoiArticle> articlePageModel = new PageModel<>();
         articlePageModel.setPageAndPageSize(page, pageSize);
         List<PoiArticle> articleList = poiArticleMapper.selectByPage(articlePageModel);
+        for (PoiArticle article : articleList) {
+            article.setContent(null);
+            article.setMdContent(null);
+        }
         articlePageModel.setList(articleList);
         model.addAttribute("data", articlePageModel);
         return "article/index";
