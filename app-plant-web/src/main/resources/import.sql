@@ -372,3 +372,24 @@ CREATE TABLE `poi_user` (
 )
   ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
+
+DROP TABLE IF EXISTS `poi_review`;
+
+CREATE TABLE `poi_review` (
+  `id`           BIGINT(20) NOT NULL AUTO_INCREMENT,
+  `status`       INT(11)    NOT NULL DEFAULT '0'
+  COMMENT '状态: -10, 删除; 0, 草稿; 10, 发布',
+  `user_id`      INT(11)             DEFAULT NULL,
+  `outer_id`     INT(11)             DEFAULT NULL,
+  `source`       VARCHAR(16)         DEFAULT NULL,
+  `picture_keys` VARCHAR(512)        DEFAULT NULL,
+  `review_body`  TEXT,
+  `create_time`  DATETIME   NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_time`  DATETIME   NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_on_update_time` (`update_time`),
+  KEY `idx_on_outer_id_source` (`outer_id`, `source`),
+  KEY `idx_on_user_id_source_outer_id` (`user_id`, `source`, `outer_id`)
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4;
