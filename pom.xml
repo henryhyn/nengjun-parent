@@ -96,6 +96,11 @@
                 <artifactId>app-todo-dao</artifactId>
                 <version>0.0.1</version>
             </dependency>
+            <dependency>
+                <groupId>com.nengjun</groupId>
+                <artifactId>app-user-dao</artifactId>
+                <version>0.0.1</version>
+            </dependency>
 
             <dependency>
                 <groupId>org.apache.commons</groupId>

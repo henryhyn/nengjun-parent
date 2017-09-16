@@ -13,6 +13,7 @@ public class PoiUser implements Serializable {
     private static final long serialVersionUID = -1256487376275397547L;
     private Integer id;
     private String openid;
+    private String unionid;
     private String phone1;
     private String phone2;
     private String nickName;
