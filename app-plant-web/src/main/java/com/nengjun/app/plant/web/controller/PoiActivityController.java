@@ -48,6 +48,10 @@ public class PoiActivityController {
         activityPageModel.setPageAndPageSize(page, pageSize);
         List<PoiActivity> activityList = poiActivityMapper.selectByPage(activityPageModel);
         Validate.isEmpty("activityList", activityList);
+        for (PoiActivity activity : activityList) {
+            activity.setContent(null);
+            activity.setMdContent(null);
+        }
         activityPageModel.setList(activityList);
         return ResultUtil.success(activityPageModel);
     }

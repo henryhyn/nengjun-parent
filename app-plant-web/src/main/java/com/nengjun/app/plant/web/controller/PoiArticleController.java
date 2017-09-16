@@ -31,6 +31,10 @@ public class PoiArticleController {
         articlePageModel.setPageAndPageSize(page, pageSize);
         List<PoiArticle> articleList = poiArticleMapper.selectByPage(articlePageModel);
         Validate.isEmpty("articleList", articleList);
+        for (PoiArticle article : articleList) {
+            article.setContent(null);
+            article.setMdContent(null);
+        }
         articlePageModel.setList(articleList);
         return ResultUtil.success(articlePageModel);
     }
