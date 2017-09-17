@@ -9,6 +9,7 @@ import com.nengjun.avatar.face.utils.ResultUtil;
 import com.qiniu.common.QiniuException;
 import com.qiniu.common.Zone;
 import com.qiniu.http.Response;
+import com.qiniu.storage.BucketManager;
 import com.qiniu.storage.Configuration;
 import com.qiniu.storage.UploadManager;
 import com.qiniu.util.Auth;
@@ -47,12 +48,14 @@ public class PoiPictureController {
     private Auth auth;
     private StringMap policy;
     private UploadManager uploadManager;
+    private BucketManager bucketManager;
 
     public PoiPictureController() {
         auth = Auth.create(ACCESS_KEY, SECRET_KEY);
         policy = new StringMap().putNotEmpty("returnBody", "{\"pictureKey\": ${key},\"fsize\": ${fsize},\"mimeType\": ${mimeType},\"width\": ${imageInfo.width},\"height\": ${imageInfo.height},\"colorModel\": ${imageInfo.colorModel},\"makeTime\": ${exif.DateTime.val}}");
         Configuration cfg = new Configuration(Zone.zone2());
         uploadManager = new UploadManager(cfg);
+        bucketManager = new BucketManager(auth, cfg);
     }
 
     @GetMapping("/images")
@@ -68,6 +71,24 @@ public class PoiPictureController {
         }
         picturePageModel.setList(pictureList);
         return ResultUtil.success(picturePageModel);
+    }
+
+    @PostMapping("/images/delete")
+    int delete(@RequestBody Op op) {
+        int sum = 0;
+        String bucket = "prod".equals(globalSetting.getEnv()) ? "pictures" : "pictures-dev";
+        try {
+            for (Integer id : op.getIds()) {
+                PoiPicture picture = poiPictureMapper.selectByPrimaryKey(id);
+                Response response = bucketManager.delete(bucket, picture.getPictureKey());
+                if (response.isOK()) {
+                    sum += poiPictureMapper.deleteByPrimaryKey(id);
+                }
+            }
+        } catch (QiniuException e) {
+            log.error("Qiniu exception.", e);
+        }
+        return sum;
     }
 
     @PostMapping("/images/upload")
@@ -173,5 +194,6 @@ public class PoiPictureController {
     @Data
     private static class Op {
         private String[] urls;
+        private Integer[] ids;
     }
 }
