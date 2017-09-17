@@ -77,16 +77,14 @@ public class PoiPictureController {
     int delete(@RequestBody Op op) {
         int sum = 0;
         String bucket = "prod".equals(globalSetting.getEnv()) ? "pictures" : "pictures-dev";
-        try {
-            for (Integer id : op.getIds()) {
-                PoiPicture picture = poiPictureMapper.selectByPrimaryKey(id);
-                Response response = bucketManager.delete(bucket, picture.getPictureKey());
-                if (response.isOK()) {
-                    sum += poiPictureMapper.deleteByPrimaryKey(id);
-                }
+        for (Integer id : op.getIds()) {
+            PoiPicture picture = poiPictureMapper.selectByPrimaryKey(id);
+            try {
+                bucketManager.delete(bucket, picture.getPictureKey());
+            } catch (QiniuException e) {
+                log.error("Qiniu exception.", e);
             }
-        } catch (QiniuException e) {
-            log.error("Qiniu exception.", e);
+            sum += poiPictureMapper.deleteByPrimaryKey(id);
         }
         return sum;
     }
