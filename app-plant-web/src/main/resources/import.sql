@@ -228,22 +228,29 @@ INSERT INTO poi_country (id, countryname, countrycode) VALUES (183, 'Zambia', 'Z
 DROP TABLE IF EXISTS `poi_picture`;
 
 CREATE TABLE `poi_picture` (
-  `id`          INT(11) NOT NULL AUTO_INCREMENT,
-  `biz_id`      INT(11) NOT NULL,
-  `picture_key` VARCHAR(255)     DEFAULT NULL,
-  `fsize`       INT(11) NOT NULL,
-  `mime_type`   VARCHAR(255)     DEFAULT NULL,
-  `width`       INT(11) NOT NULL,
-  `height`      INT(11) NOT NULL,
-  `color_model` VARCHAR(255)     DEFAULT NULL,
-  `make_time`   VARCHAR(255)     DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `id`          INT(11)  NOT NULL AUTO_INCREMENT,
+  `biz_id`      INT(11)  NOT NULL,
+  `ref_id`      INT(11)           DEFAULT NULL,
+  `picture_key` VARCHAR(255)      DEFAULT NULL,
+  `fsize`       INT(11)  NOT NULL,
+  `mime_type`   VARCHAR(255)      DEFAULT NULL,
+  `width`       INT(11)  NOT NULL,
+  `height`      INT(11)  NOT NULL,
+  `color_model` VARCHAR(255)      DEFAULT NULL,
+  `make_time`   VARCHAR(255)      DEFAULT NULL,
+  `create_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `tags`        VARCHAR(512)      DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_on_biz_ref` (`biz_id`, `ref_id`),
+  KEY `idx_on_update_time` (`update_time`)
 )
   ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
 
-INSERT INTO `poi_picture` VALUES (1, 1, 'FgLmrFQZXEhZi3O02Lkb_9kcrwnG', 29472, 'image/jpeg', 440, 330, 'ycbcr', NULL);
-INSERT INTO `poi_picture` VALUES (2, 1, 'FgrM6ia6jXEjJaJJeaqJySY6gByr', 18682, 'image/jpeg', 420, 323, 'ycbcr', NULL);
+INSERT INTO `poi_picture` (biz_id, picture_key, fsize, mime_type, width, height, color_model, make_time)
+VALUES (1, 'FgLmrFQZXEhZi3O02Lkb_9kcrwnG', 29472, 'image/jpeg', 440, 330, 'ycbcr', NULL),
+  (1, 'FgrM6ia6jXEjJaJJeaqJySY6gByr', 18682, 'image/jpeg', 420, 323, 'ycbcr', NULL);
 
 DROP TABLE IF EXISTS `poi_shop`;
 
