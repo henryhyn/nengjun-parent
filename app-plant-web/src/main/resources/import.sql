@@ -229,6 +229,7 @@ DROP TABLE IF EXISTS `poi_picture`;
 
 CREATE TABLE `poi_picture` (
   `id`          INT(11) NOT NULL AUTO_INCREMENT,
+  `biz_id`      INT(11) NOT NULL,
   `picture_key` VARCHAR(255)     DEFAULT NULL,
   `fsize`       INT(11) NOT NULL,
   `mime_type`   VARCHAR(255)     DEFAULT NULL,
@@ -241,8 +242,8 @@ CREATE TABLE `poi_picture` (
   ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
 
-INSERT INTO `poi_picture` VALUES (1, 'FuyDovSaSxq_hJBTXF1smfq9kYEg', 29472, 'image/jpeg', 440, 330, 'ycbcr', NULL);
-INSERT INTO `poi_picture` VALUES (2, 'Flk-wACsCjHFMnyIfiU4plIemilJ', 18682, 'image/jpeg', 420, 323, 'ycbcr', NULL);
+INSERT INTO `poi_picture` VALUES (1, 1, 'FgLmrFQZXEhZi3O02Lkb_9kcrwnG', 29472, 'image/jpeg', 440, 330, 'ycbcr', NULL);
+INSERT INTO `poi_picture` VALUES (2, 1, 'FgrM6ia6jXEjJaJJeaqJySY6gByr', 18682, 'image/jpeg', 420, 323, 'ycbcr', NULL);
 
 DROP TABLE IF EXISTS `poi_shop`;
 

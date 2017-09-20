@@ -100,6 +100,7 @@ public class PoiPictureController {
         if (poiPicture == null) {
             return new PoiPicture();
         }
+        poiPicture.setBizId(bizCode.getType());
         poiPictureMapper.insert(poiPicture);
         return poiPicture;
     }
@@ -138,6 +139,7 @@ public class PoiPictureController {
         if (poiPicture == null) {
             return 0;
         }
+        poiPicture.setBizId(bizCode.getType());
         return poiPictureMapper.insert(poiPicture);
     }
 
@@ -176,11 +178,11 @@ public class PoiPictureController {
     }
 
     private String getUpToken(BizCode bizCode) {
-        String bucket = String.format("pic_%s_%s", bizCode, globalSetting.getEnv());
+        String bucket = String.format("pic-%s-%s", bizCode.toString().toLowerCase(), globalSetting.getEnv());
         return auth.uploadToken(bucket, null, 3600L, policy);
     }
 
-    private String getAbsolutePath(String key, Integer bizId) {
+    private String getAbsolutePath(String key, int bizId) {
         BizCode bizCode = BizCode.valueOf(bizId);
         if (bizCode == null) {
             return null;
