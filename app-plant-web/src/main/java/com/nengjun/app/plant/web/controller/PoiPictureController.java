@@ -3,6 +3,7 @@ package com.nengjun.app.plant.web.controller;
 import com.nengjun.app.content.dao.entity.PoiPicture;
 import com.nengjun.app.content.dao.mapper.PoiPictureMapper;
 import com.nengjun.app.plant.web.config.GlobalSetting;
+import com.nengjun.app.plant.web.enums.BizCode;
 import com.nengjun.avatar.face.type.PageModel;
 import com.nengjun.avatar.face.type.Result;
 import com.nengjun.avatar.face.utils.ResultUtil;
@@ -67,7 +68,7 @@ public class PoiPictureController {
         picturePageModel.setPageAndPageSize(page, pageSize);
         List<PoiPicture> pictureList = poiPictureMapper.selectByPage(picturePageModel);
         for (PoiPicture poiPicture : pictureList) {
-            poiPicture.setPictureKey(getAbsolutePath(poiPicture.getPictureKey()));
+            poiPicture.setPictureKey(getAbsolutePath(poiPicture.getPictureKey(), poiPicture.getBizId()));
         }
         picturePageModel.setList(pictureList);
         return ResultUtil.success(picturePageModel);
@@ -90,8 +91,12 @@ public class PoiPictureController {
     }
 
     @PostMapping("/images/upload")
-    PoiPicture upload(@RequestParam("fileData") MultipartFile fileData) {
-        PoiPicture poiPicture = put(fileData);
+    PoiPicture upload(
+            @RequestParam("fileData") MultipartFile fileData,
+            @RequestParam(value = "biz", required = true) String biz
+    ) {
+        BizCode bizCode = BizCode.valueOf(biz);
+        PoiPicture poiPicture = put(fileData, bizCode);
         if (poiPicture == null) {
             return new PoiPicture();
         }
@@ -101,14 +106,15 @@ public class PoiPictureController {
 
     @PostMapping("/images/upload/urls")
     int upload(@RequestBody Op op) {
+        BizCode bizCode = BizCode.valueOf(op.getBiz());
         int sum = 0;
         for (String url : op.getUrls()) {
-            sum += uploadByUrl(url);
+            sum += uploadByUrl(url, bizCode);
         }
         return sum;
     }
 
-    private int uploadByUrl(String url) {
+    private int uploadByUrl(String url, BizCode bizCode) {
         PoiPicture poiPicture = null;
         HttpURLConnection conn = null;
         InputStream is = null;
@@ -120,7 +126,7 @@ public class PoiPictureController {
             conn.setReadTimeout(TIMEOUTMILLIS);
             conn.setRequestMethod("GET");
             is = conn.getInputStream();
-            poiPicture = put(is);
+            poiPicture = put(is, bizCode);
         } catch (IOException e) {
             log.error("IO error.", e);
         } finally {
@@ -135,8 +141,8 @@ public class PoiPictureController {
         return poiPictureMapper.insert(poiPicture);
     }
 
-    private PoiPicture put(InputStream is) {
-        String token = getUpToken();
+    private PoiPicture put(InputStream is, BizCode bizCode) {
+        String token = getUpToken(bizCode);
         try {
             Response response = uploadManager.put(is, null, token, null, null);
             PoiPicture image = response.jsonToObject(PoiPicture.class);
@@ -151,8 +157,8 @@ public class PoiPictureController {
         return null;
     }
 
-    private PoiPicture put(MultipartFile file) {
-        String token = getUpToken();
+    private PoiPicture put(MultipartFile file, BizCode bizCode) {
+        String token = getUpToken(bizCode);
         try {
             Response response = uploadManager.put(file.getBytes(), null, token, null, null, true);
             PoiPicture image = response.jsonToObject(PoiPicture.class);
@@ -169,13 +175,17 @@ public class PoiPictureController {
         return null;
     }
 
-    private String getUpToken() {
-        String bucket = "prod".equals(globalSetting.getEnv()) ? "pictures" : "pictures-dev";
+    private String getUpToken(BizCode bizCode) {
+        String bucket = String.format("pic_%s_%s", bizCode, globalSetting.getEnv());
         return auth.uploadToken(bucket, null, 3600L, policy);
     }
 
-    private String getAbsolutePath(String key) {
-        String domain = "prod".equals(globalSetting.getEnv()) ? "http://oucvb8wcs.bkt.clouddn.com/" : "http://oud35cwi4.bkt.clouddn.com/";
+    private String getAbsolutePath(String key, Integer bizId) {
+        BizCode bizCode = BizCode.valueOf(bizId);
+        if (bizCode == null) {
+            return null;
+        }
+        String domain = "prod".equals(globalSetting.getEnv()) ? bizCode.getProd() : bizCode.getDev();
         return domain + key;
     }
 
@@ -191,6 +201,7 @@ public class PoiPictureController {
 
     @Data
     private static class Op {
+        private String biz;
         private String[] urls;
         private Integer[] ids;
     }

@@ -9,6 +9,8 @@ import lombok.Data;
 public class PoiPicture {
     private Integer id;
 
+    private Integer bizId;
+
     /**
      * ${key}
      */

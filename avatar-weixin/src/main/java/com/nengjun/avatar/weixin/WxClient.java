@@ -30,6 +30,8 @@ public class WxClient {
             }
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            method.releaseConnection();
         }
         return null;
     }
