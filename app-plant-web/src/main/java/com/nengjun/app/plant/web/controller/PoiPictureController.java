@@ -17,6 +17,7 @@ import com.qiniu.util.Auth;
 import com.qiniu.util.StringMap;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -61,11 +62,19 @@ public class PoiPictureController {
 
     @GetMapping("/images")
     Result _index(
+            @RequestParam(value = "biz", required = false) String biz,
             @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
             @RequestParam(value = "pageSize", required = false, defaultValue = "20") Integer pageSize
     ) {
         PageModel<PoiPicture> picturePageModel = new PageModel<>();
         picturePageModel.setPageAndPageSize(page, pageSize);
+        if (StringUtils.isNotBlank(biz)) {
+            BizCode bizCode = BizCode.valueOf(biz);
+            if (bizCode != null) {
+                picturePageModel.addCondition("biz_id = ?", bizCode.getType());
+            }
+        }
+        picturePageModel.setOrders("id.desc");
         List<PoiPicture> pictureList = poiPictureMapper.selectByPage(picturePageModel);
         for (PoiPicture poiPicture : pictureList) {
             poiPicture.setPictureKey(getAbsolutePath(poiPicture.getPictureKey(), poiPicture.getBizId()));
