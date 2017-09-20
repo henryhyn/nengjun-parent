@@ -6,7 +6,7 @@ import lombok.Getter;
  * Created by Henry on 2017/9/19.
  */
 public enum BizCode {
-    SHOP(1, "http://owkrv24pf.bkt.clouddn.com/", "http://owkrm59it.bkt.clouddn.com/"), ACTIVITY(2, "http://owkr7o2r5.bkt.clouddn.com/", "http://owkr4viuk.bkt.clouddn.com/"), ARTICLE(2, "http://owkulzm7p.bkt.clouddn.com/", "http://owkui4i5d.bkt.clouddn.com/");
+    SHOP(1, "http://owkrv24pf.bkt.clouddn.com/", "http://owkrm59it.bkt.clouddn.com/"), ACTIVITY(2, "http://owkr7o2r5.bkt.clouddn.com/", "http://owkr4viuk.bkt.clouddn.com/"), ARTICLE(3, "http://owkulzm7p.bkt.clouddn.com/", "http://owkui4i5d.bkt.clouddn.com/");
 
     @Getter
     private int type;

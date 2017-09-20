@@ -77,9 +77,13 @@ public class PoiPictureController {
     @PostMapping("/images/delete")
     int delete(@RequestBody Op op) {
         int sum = 0;
-        String bucket = "prod".equals(globalSetting.getEnv()) ? "pictures" : "pictures-dev";
         for (Integer id : op.getIds()) {
             PoiPicture picture = poiPictureMapper.selectByPrimaryKey(id);
+            BizCode bizCode = BizCode.valueOf(picture.getBizId());
+            if (bizCode == null) {
+                continue;
+            }
+            String bucket = String.format("pic-%s-%s", bizCode.toString().toLowerCase(), globalSetting.getEnv());
             try {
                 bucketManager.delete(bucket, picture.getPictureKey());
             } catch (QiniuException e) {
