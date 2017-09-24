@@ -77,5 +77,7 @@ public class PoiPlantMapperTest extends AbstractTest {
         session.close();
 
         System.out.println(resultHandler.getMappedResults());
+
+        System.out.println(poiCountryMapper.selectAsMap());
     }
 }

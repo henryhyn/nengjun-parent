@@ -4,6 +4,7 @@ import com.nengjun.app.plant.dao.entity.PoiCountry;
 import com.nengjun.avatar.mybatis.mapper.SqlMapper;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -12,4 +13,6 @@ import java.util.Map;
 @Mapper
 public interface PoiCountryMapper extends SqlMapper<PoiCountry, Integer> {
     Map<String, Long> countByCode();
+
+    List<Map<String, Object>> selectAsMap();
 }

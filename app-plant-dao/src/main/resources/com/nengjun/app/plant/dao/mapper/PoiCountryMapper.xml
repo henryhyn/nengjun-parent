@@ -17,4 +17,8 @@
     <select id="countByCode" resultType="java.util.Map" resultMap="codeToCount">
         select countrycode, count(1) as cnt from poi_country group by countrycode
     </select>
+
+    <select id="selectAsMap" resultType="java.util.Map">
+        select * from poi_country limit 10
+    </select>
 </mapper>
