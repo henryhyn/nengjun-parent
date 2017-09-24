@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nengjun.app.plant.dao.mapper.PoiCountryMapper">
+    <resultMap id="BaseResultMap" type="com.nengjun.app.plant.dao.entity.PoiCountry">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="countryname" property="countryname" jdbcType="VARCHAR"/>
+        <result column="countrycode" property="countrycode" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, countryname, countrycode
+    </sql>
+
+    <resultMap id="codeToCount" type="hashmap">
+        <result property="key" column="countrycode"/>
+        <result property="value" column="cnt"/>
+    </resultMap>
+    <select id="countByCode" resultType="java.util.Map" resultMap="codeToCount">
+        select countrycode, count(1) as cnt from poi_country group by countrycode
+    </select>
+</mapper>

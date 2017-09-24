@@ -4,6 +4,9 @@ import com.nengjun.AbstractTest;
 import com.nengjun.app.plant.dao.entity.PoiCountry;
 import com.nengjun.app.plant.dao.entity.PoiPlant;
 import com.nengjun.avatar.face.type.PageModel;
+import com.nengjun.avatar.mybatis.handler.MapResultHandler;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +22,9 @@ public class PoiPlantMapperTest extends AbstractTest {
 
     @Autowired
     private PoiCountryMapper poiCountryMapper;
+
+    @Autowired
+    private SqlSessionFactory sessionFactory;
 
     @Test
     public void test1() {
@@ -60,5 +66,16 @@ public class PoiPlantMapperTest extends AbstractTest {
         List<PoiCountry> countryList = poiCountryMapper.selectByPage(countryPageModel);
         countryPageModel.setList(countryList);
         System.out.println(countryPageModel);
+    }
+
+    @Test
+    public void testGroupBy() {
+        MapResultHandler<String, Long> resultHandler = new MapResultHandler<>();
+
+        SqlSession session = sessionFactory.openSession();
+        session.select(String.format("%s.countByCode", PoiCountryMapper.class.getName()), resultHandler);
+        session.close();
+
+        System.out.println(resultHandler.getMappedResults());
     }
 }
