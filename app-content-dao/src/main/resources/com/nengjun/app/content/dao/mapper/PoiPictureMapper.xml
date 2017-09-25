@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nengjun.app.content.dao.mapper.PoiPictureMapper">
+    <resultMap id="BaseResultMap" type="com.nengjun.app.content.dao.entity.PoiPicture">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="biz_id" property="bizId" jdbcType="INTEGER"/>
+        <result column="ref_id" property="refId" jdbcType="INTEGER"/>
+        <result column="picture_key" property="pictureKey" jdbcType="VARCHAR"/>
+        <result column="fsize" property="fsize" jdbcType="INTEGER"/>
+        <result column="mime_type" property="mimeType" jdbcType="VARCHAR"/>
+        <result column="width" property="width" jdbcType="INTEGER"/>
+        <result column="height" property="height" jdbcType="INTEGER"/>
+        <result column="color_model" property="colorModel" jdbcType="VARCHAR"/>
+        <result column="make_time" property="makeTime" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="tags" property="tags" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, biz_id, ref_id, picture_key, fsize, mime_type, width, height, color_model, make_time,
+        create_time, update_time, tags
+    </sql>
+    <select id="selectByBizIdAndRefIds" resultMap="BaseResultMap">
+        SELECT * FROM poi_picture WHERE biz_id = #{bizId,jdbcType=INTEGER} and ref_id in
+        <foreach item="item" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+</mapper>
