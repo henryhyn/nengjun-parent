@@ -71,7 +71,7 @@ public class PoiPictureController {
         if (StringUtils.isNotBlank(biz)) {
             BizCode bizCode = BizCode.valueOf(biz);
             if (bizCode != null) {
-                picturePageModel.addCondition("biz_id = ?", bizCode.getType());
+                picturePageModel.addCondition(String.format("biz_id between %d and ?", bizCode.getType()), bizCode.getType() + 99);
             }
         }
         picturePageModel.setOrders("id.desc");
