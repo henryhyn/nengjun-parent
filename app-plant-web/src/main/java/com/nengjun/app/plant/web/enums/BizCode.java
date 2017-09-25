@@ -6,30 +6,17 @@ import lombok.Getter;
  * Created by Henry on 2017/9/19.
  */
 public enum BizCode {
-    SHOP(0, "shop", "http://owkrv24pf.bkt.clouddn.com/", "http://owkrm59it.bkt.clouddn.com/")
-    , SHOP_REVIEW(1, "shop", "http://owkrv24pf.bkt.clouddn.com/", "http://owkrm59it.bkt.clouddn.com/")
-    , ACTIVITY(10, "activity", "http://owkr7o2r5.bkt.clouddn.com/", "http://owkr4viuk.bkt.clouddn.com/")
-    , ACTIVITY_REVIEW(11, "activity", "http://owkr7o2r5.bkt.clouddn.com/", "http://owkr4viuk.bkt.clouddn.com/")
-    , ARTICLE(20, "article", "http://owkulzm7p.bkt.clouddn.com/", "http://owkui4i5d.bkt.clouddn.com/")
-    , ARTICLE_REVIEW(21, "article", "http://owkulzm7p.bkt.clouddn.com/", "http://owkui4i5d.bkt.clouddn.com/");
+    SHOP(0, PicSpace.SHOP), SHOP_REVIEW(1, PicSpace.SHOP), ACTIVITY(100, PicSpace.ACTIVITY), ACTIVITY_REVIEW(101, PicSpace.ACTIVITY), ARTICLE(200, PicSpace.ARTICLE), ARTICLE_REVIEW(201, PicSpace.ARTICLE);
 
     @Getter
     private int type;
 
     @Getter
-    private String space;
+    private PicSpace space;
 
-    @Getter
-    private String dev;
-
-    @Getter
-    private String prod;
-
-    BizCode(int type, String space, String dev, String prod) {
+    BizCode(int type, PicSpace space) {
         this.type = type;
         this.space = space;
-        this.dev = dev;
-        this.prod = prod;
     }
 
     public static BizCode valueOf(int type) {
@@ -38,13 +25,13 @@ public enum BizCode {
                 return SHOP;
             case 1:
                 return SHOP_REVIEW;
-            case 10:
+            case 100:
                 return ACTIVITY;
-            case 11:
+            case 101:
                 return ACTIVITY_REVIEW;
-            case 20:
+            case 200:
                 return ARTICLE;
-            case 21:
+            case 201:
                 return ARTICLE_REVIEW;
             default:
                 return null;

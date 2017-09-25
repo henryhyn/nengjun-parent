@@ -92,7 +92,7 @@ public class PoiPictureController {
             if (bizCode == null) {
                 continue;
             }
-            String bucket = String.format("pic-%s-%s", bizCode.getSpace().toLowerCase(), globalSetting.getEnv());
+            String bucket = String.format("pic-%s-%s", bizCode.getSpace().toString().toLowerCase(), globalSetting.getEnv());
             try {
                 bucketManager.delete(bucket, picture.getPictureKey());
             } catch (QiniuException e) {
@@ -191,7 +191,7 @@ public class PoiPictureController {
     }
 
     private String getUpToken(BizCode bizCode) {
-        String bucket = String.format("pic-%s-%s", bizCode.getSpace().toLowerCase(), globalSetting.getEnv());
+        String bucket = String.format("pic-%s-%s", bizCode.getSpace().toString().toLowerCase(), globalSetting.getEnv());
         return auth.uploadToken(bucket, null, 3600L, policy);
     }
 
@@ -200,7 +200,7 @@ public class PoiPictureController {
         if (bizCode == null) {
             return null;
         }
-        String domain = "prod".equals(globalSetting.getEnv()) ? bizCode.getProd() : bizCode.getDev();
+        String domain = "prod".equals(globalSetting.getEnv()) ? bizCode.getSpace().getProd() : bizCode.getSpace().getDev();
         return domain + key;
     }
 
