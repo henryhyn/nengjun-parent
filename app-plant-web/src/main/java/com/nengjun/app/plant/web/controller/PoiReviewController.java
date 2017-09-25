@@ -5,7 +5,9 @@ import com.nengjun.app.content.dao.mapper.PoiPictureMapper;
 import com.nengjun.app.plant.web.config.GlobalSetting;
 import com.nengjun.app.plant.web.enums.BizCode;
 import com.nengjun.app.user.dao.entity.PoiReview;
+import com.nengjun.app.user.dao.entity.PoiUser;
 import com.nengjun.app.user.dao.mapper.PoiReviewMapper;
+import com.nengjun.app.user.dao.mapper.PoiUserMapper;
 import com.nengjun.avatar.face.type.PageModel;
 import com.nengjun.avatar.face.type.Result;
 import com.nengjun.avatar.face.utils.ResultUtil;
@@ -38,6 +40,9 @@ public class PoiReviewController {
     @Autowired
     private PoiPictureMapper poiPictureMapper;
 
+    @Autowired
+    private PoiUserMapper poiUserMapper;
+
     @GetMapping("/reviews")
     public Result _index(
             @RequestParam(value = "biz", required = true) String biz,
@@ -66,11 +71,19 @@ public class PoiReviewController {
             picturesMap.get(key).add(getAbsolutePath(picture.getPictureKey(), bizId));
         }
 
+        List<Integer> userIds = reviewList.stream().map(PoiReview::getUserId).collect(Collectors.toList());
+        List<PoiUser> userList = poiUserMapper.selectByIds(userIds);
+        Map<Integer, PoiUser> userMap = new HashMap<>();
+        for (PoiUser user : userList) {
+            userMap.put(user.getId(), user);
+        }
+
         List<PoiReviewDTO> reviewDTOList = new ArrayList<>();
         for (PoiReview review : reviewList) {
             PoiReviewDTO reviewDTO = new PoiReviewDTO();
             BeanUtils.copyProperties(review, reviewDTO);
             reviewDTO.setPictures(picturesMap.get(review.getId()));
+            reviewDTO.setUser(userMap.get(review.getUserId()));
             reviewDTOList.add(reviewDTO);
         }
 
@@ -109,6 +122,7 @@ public class PoiReviewController {
     @Data
     private static class PoiReviewDTO extends PoiReview {
         private String biz;
+        private PoiUser user;
         private List<String> pictures;
     }
 }
