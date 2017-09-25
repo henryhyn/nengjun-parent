@@ -14,9 +14,8 @@ public class PoiReview implements Serializable {
     private Integer id;
     private Integer status;
     private Integer userId;
-    private Integer outerId;
-    private String source;
-    private String pictureKeys;
+    private Integer bizId;
+    private Integer refId;
     private String reviewBody;
     private Date createTime;
     private Date updateTime;

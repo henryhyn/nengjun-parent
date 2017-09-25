@@ -105,8 +105,9 @@ public class PoiPictureController {
 
     @PostMapping("/images/upload")
     PoiPicture upload(
-            @RequestParam("fileData") MultipartFile fileData,
-            @RequestParam(value = "biz", required = true) String biz
+            @RequestParam("fileData") MultipartFile fileData
+            , @RequestParam(value = "biz", required = true) String biz
+            , @RequestParam(value = "refId", required = true) Integer refId
     ) {
         BizCode bizCode = BizCode.valueOf(biz);
         PoiPicture poiPicture = put(fileData, bizCode);
@@ -114,6 +115,7 @@ public class PoiPictureController {
             return new PoiPicture();
         }
         poiPicture.setBizId(bizCode.getType());
+        poiPicture.setRefId(refId);
         poiPictureMapper.insert(poiPicture);
         return poiPicture;
     }
@@ -123,12 +125,12 @@ public class PoiPictureController {
         BizCode bizCode = BizCode.valueOf(op.getBiz());
         int sum = 0;
         for (String url : op.getUrls()) {
-            sum += uploadByUrl(url, bizCode);
+            sum += uploadByUrl(url, bizCode, op.getRefId());
         }
         return sum;
     }
 
-    private int uploadByUrl(String url, BizCode bizCode) {
+    private int uploadByUrl(String url, BizCode bizCode, Integer refId) {
         PoiPicture poiPicture = null;
         HttpURLConnection conn = null;
         InputStream is = null;
@@ -153,6 +155,7 @@ public class PoiPictureController {
             return 0;
         }
         poiPicture.setBizId(bizCode.getType());
+        poiPicture.setRefId(refId);
         return poiPictureMapper.insert(poiPicture);
     }
 
@@ -217,6 +220,7 @@ public class PoiPictureController {
     @Data
     private static class Op {
         private String biz;
+        private Integer refId;
         private String[] urls;
         private Integer[] ids;
     }
