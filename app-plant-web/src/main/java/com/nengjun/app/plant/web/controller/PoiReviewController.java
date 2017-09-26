@@ -56,6 +56,7 @@ public class PoiReviewController {
         Integer bizId = bizCode.getType();
         reviewPageModel.addCondition("biz_id = ?", bizId);
         reviewPageModel.addCondition("ref_id = ?", refId);
+        reviewPageModel.setOrders("update_time.desc");
         List<PoiReview> reviewList = poiReviewMapper.selectByPage(reviewPageModel);
         Validate.isEmpty("reviewList", reviewList);
 
