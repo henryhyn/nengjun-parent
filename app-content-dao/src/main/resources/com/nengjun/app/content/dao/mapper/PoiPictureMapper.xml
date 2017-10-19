@@ -25,5 +25,6 @@
         <foreach item="item" collection="list" open="(" separator="," close=")">
             #{item}
         </foreach>
+        order by id desc
     </select>
 </mapper>
