@@ -19,6 +19,8 @@ public class PoiPlant implements Serializable {
 
     private String altName;
 
+    private String content;
+
     public void setName(String name) {
         this.name = name.trim();
     }

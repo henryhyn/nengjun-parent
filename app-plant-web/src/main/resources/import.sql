@@ -4,12 +4,13 @@ CREATE TABLE `poi_plant` (
   `id`       INT(11) NOT NULL AUTO_INCREMENT,
   `name`     VARCHAR(64)      DEFAULT NULL,
   `alt_name` VARCHAR(64)      DEFAULT NULL,
+  content    LONGTEXT,
   PRIMARY KEY (`id`)
 )
   ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
-INSERT INTO `poi_plant` VALUES (1, '玫瑰花', '爱情花');
+INSERT INTO `poi_plant` VALUES (1, '玫瑰花', '爱情花', 'Hello');
 
 DROP TABLE IF EXISTS `poi_article`;
 

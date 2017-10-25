@@ -27,7 +27,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -104,20 +106,22 @@ public class PoiPictureController {
     }
 
     @PostMapping("/images/upload")
-    PoiPicture upload(
+    Map<String, String> upload(
             @RequestParam("fileData") MultipartFile fileData
             , @RequestParam(value = "biz", required = true) String biz
             , @RequestParam(value = "refId", required = true) Integer refId
     ) {
+        Map<String, String> rs = new HashMap<>();
         BizCode bizCode = BizCode.valueOf(biz);
         PoiPicture poiPicture = put(fileData, bizCode);
         if (poiPicture == null) {
-            return new PoiPicture();
+            return rs;
         }
         poiPicture.setBizId(bizCode.getType());
         poiPicture.setRefId(refId);
         poiPictureMapper.insert(poiPicture);
-        return poiPicture;
+        rs.put("url", getAbsolutePath(poiPicture.getPictureKey(), poiPicture.getBizId()));
+        return rs;
     }
 
     @PostMapping("/images/upload/urls")
