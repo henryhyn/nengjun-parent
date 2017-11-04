@@ -404,18 +404,18 @@ CREATE TABLE `poi_review` (
 
 DROP TABLE IF EXISTS `poi_rss_article`;
 CREATE TABLE `poi_rss_article` (
-  `id`          INT(11) NOT NULL AUTO_INCREMENT,
-  `outer_id`    VARCHAR(255)     DEFAULT NULL,
-  `profile_id`  INT(11)          DEFAULT NULL,
-  `title`       VARCHAR(255)     DEFAULT NULL,
-  `category`    VARCHAR(255)     DEFAULT NULL,
-  `link`        VARCHAR(255)     DEFAULT NULL,
-  `author`      VARCHAR(255)     DEFAULT NULL,
-  `pub_date`    DATETIME         DEFAULT NULL,
-  `status`      INT(11)          DEFAULT NULL,
+  `id`          INT(11)  NOT NULL AUTO_INCREMENT,
+  `outer_id`    VARCHAR(255)      DEFAULT NULL,
+  `profile_id`  INT(11)           DEFAULT NULL,
+  `title`       VARCHAR(255)      DEFAULT NULL,
+  `category`    VARCHAR(255)      DEFAULT NULL,
+  `link`        VARCHAR(255)      DEFAULT NULL,
+  `author`      VARCHAR(255)      DEFAULT NULL,
+  `pub_date`    DATETIME          DEFAULT NULL,
+  `status`      INT(11)           DEFAULT NULL,
   `description` LONGTEXT,
-  `create_time` DATETIME         DEFAULT NULL,
-  `update_time` DATETIME         DEFAULT NULL,
+  `create_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `udx_on_outer_id_and_profile_id` (`outer_id`, `profile_id`)
 )
@@ -424,12 +424,12 @@ CREATE TABLE `poi_rss_article` (
 
 DROP TABLE IF EXISTS `poi_rss_history`;
 CREATE TABLE `poi_rss_history` (
-  `id`          INT(11) NOT NULL AUTO_INCREMENT,
-  `profile_id`  INT(11)          DEFAULT NULL,
-  `num_records` INT(11)          DEFAULT NULL,
-  `status`      INT(11)          DEFAULT NULL,
-  `create_time` DATETIME         DEFAULT NULL,
-  `update_time` DATETIME         DEFAULT NULL,
+  `id`          INT(11)  NOT NULL AUTO_INCREMENT,
+  `profile_id`  INT(11)           DEFAULT NULL,
+  `num_records` INT(11)           DEFAULT NULL,
+  `status`      INT(11)           DEFAULT NULL,
+  `create_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `FK_gqbwptsppqyq42mwj4pe40yob` (`profile_id`)
 )
@@ -438,13 +438,13 @@ CREATE TABLE `poi_rss_history` (
 
 DROP TABLE IF EXISTS `poi_rss_profile`;
 CREATE TABLE `poi_rss_profile` (
-  `id`          INT(11) NOT NULL AUTO_INCREMENT,
-  `name`        VARCHAR(255)     DEFAULT NULL,
-  `url`         VARCHAR(255)     DEFAULT NULL,
-  `num_records` INT(11)          DEFAULT NULL,
-  `status`      INT(11)          DEFAULT NULL,
-  `create_time` DATETIME         DEFAULT NULL,
-  `update_time` DATETIME         DEFAULT NULL,
+  `id`          INT(11)  NOT NULL AUTO_INCREMENT,
+  `name`        VARCHAR(255)      DEFAULT NULL,
+  `url`         VARCHAR(255)      DEFAULT NULL,
+  `num_records` INT(11)           DEFAULT NULL,
+  `status`      INT(11)           DEFAULT NULL,
+  `create_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 )
   ENGINE = InnoDB
