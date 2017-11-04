@@ -26,6 +26,7 @@
         <module>app-party-dao</module>
         <module>app-todo-dao</module>
         <module>app-user-dao</module>
+        <module>poi-rss-dao</module>
     </modules>
 
     <properties>
@@ -101,11 +102,21 @@
                 <artifactId>app-user-dao</artifactId>
                 <version>0.0.1</version>
             </dependency>
+            <dependency>
+                <groupId>com.nengjun</groupId>
+                <artifactId>poi-rss-dao</artifactId>
+                <version>0.0.1</version>
+            </dependency>
 
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
                 <version>3.6</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>2.5</version>
             </dependency>
             <dependency>
                 <groupId>org.mybatis.spring.boot</groupId>

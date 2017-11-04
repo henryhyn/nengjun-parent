@@ -401,3 +401,71 @@ CREATE TABLE `poi_review` (
 )
   ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
+
+DROP TABLE IF EXISTS `poi_rss_article`;
+CREATE TABLE `poi_rss_article` (
+  `id`          INT(11) NOT NULL AUTO_INCREMENT,
+  `outer_id`    VARCHAR(255)     DEFAULT NULL,
+  `profile_id`  INT(11)          DEFAULT NULL,
+  `title`       VARCHAR(255)     DEFAULT NULL,
+  `category`    VARCHAR(255)     DEFAULT NULL,
+  `link`        VARCHAR(255)     DEFAULT NULL,
+  `author`      VARCHAR(255)     DEFAULT NULL,
+  `pub_date`    DATETIME         DEFAULT NULL,
+  `status`      INT(11)          DEFAULT NULL,
+  `description` LONGTEXT,
+  `create_time` DATETIME         DEFAULT NULL,
+  `update_time` DATETIME         DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `udx_on_outer_id_and_profile_id` (`outer_id`, `profile_id`)
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4;
+
+DROP TABLE IF EXISTS `poi_rss_history`;
+CREATE TABLE `poi_rss_history` (
+  `id`          INT(11) NOT NULL AUTO_INCREMENT,
+  `profile_id`  INT(11)          DEFAULT NULL,
+  `num_records` INT(11)          DEFAULT NULL,
+  `status`      INT(11)          DEFAULT NULL,
+  `create_time` DATETIME         DEFAULT NULL,
+  `update_time` DATETIME         DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_gqbwptsppqyq42mwj4pe40yob` (`profile_id`)
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
+
+DROP TABLE IF EXISTS `poi_rss_profile`;
+CREATE TABLE `poi_rss_profile` (
+  `id`          INT(11) NOT NULL AUTO_INCREMENT,
+  `name`        VARCHAR(255)     DEFAULT NULL,
+  `url`         VARCHAR(255)     DEFAULT NULL,
+  `num_records` INT(11)          DEFAULT NULL,
+  `status`      INT(11)          DEFAULT NULL,
+  `create_time` DATETIME         DEFAULT NULL,
+  `update_time` DATETIME         DEFAULT NULL,
+  PRIMARY KEY (`id`)
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
+
+INSERT INTO `poi_rss_profile` (name, url, status)
+VALUES ('36Kr', 'http://36kr.com/feed', 1),
+  ('小众软件', 'http://feeds.appinn.com/appinns', 1),
+  ('爱范儿', 'http://www.ifanr.com/feed', 1),
+  ('极客公园', 'http://www.geekpark.net/rss', 1),
+  ('伯乐在线', 'http://blog.jobbole.com/feed', 1),
+  ('程序师', 'http://www.techug.com/feed', 1),
+  ('印象笔记', 'http://blog.yinxiang.com/feed', 1),
+  ('小强的时间管理博客', 'http://www.gtdlife.com/feed', 1),
+  ('LaTeX工作室', 'http://www.latexstudio.net/feed', 1),
+  ('知道创宇', 'http://blog.knownsec.com/feed', 1),
+  ('阮一峰的网络日志', 'http://www.ruanyifeng.com/blog/atom.xml', 1),
+  ('lancezhange', 'http://www.lancezhange.com/atom.xml', 1),
+  ('廖雪峰的官方网站', 'http://www.liaoxuefeng.com/feed', 1),
+  ('外刊IT评论', 'http://www.vaikan.com/feed', 1),
+  ('犸特头', 'http://blog.mttqq.com/feed', 1),
+  ('matrix67', 'http://www.matrix67.com/blog/feed', 1),
+  ('知乎每日精选', 'https://www.zhihu.com/rss', 1),
+  ('科学松鼠会', 'http://songshuhui.net/feed', 1);

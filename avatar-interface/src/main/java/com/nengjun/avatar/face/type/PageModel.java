@@ -38,6 +38,8 @@ public class PageModel<T> {
     private Map<String, Object> conditions;
 
     public PageModel() {
+        page = 1;
+        pageSize = Integer.MAX_VALUE;
         orders = "";
         conditions = new HashMap<>();
     }
