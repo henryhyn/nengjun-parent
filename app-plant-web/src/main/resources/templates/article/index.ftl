@@ -22,22 +22,25 @@
     <div class='main-inner'>
       <div class='content-wrap'>
         <div class='content'>
-          <section class='posts-expand'>
+          <div class='posts-expand'>
           <#list data.list as article>
-            <article class='post post-type-normal'>
-              <header class='post-header'>
-                <h1 class='post-title'>
-                  <a href='/articles/${article.id}' class='post-title-link'>${article.title}</a>
-                </h1>
-              </header>
-              <div class='post-meta'>
-                <img src='${article.cover}'/>
+            <a href='/articles/${article.id}'>
+              <section class='hui-post-item'>
+                <header class='hui-post-header'>
+                  <img src='${article.cover}'/>
 
-                <p>${article.summary}</p>
-              </div>
-            </article>
+                  <h2 class='hui-post-title'>${article.title}</h2>
+                </header>
+                <p class='hui-post-summary'>${article.summary}</p>
+                <footer class='hui-flex-box'>
+                  <div>阅读全文</div>
+                  <div class='hui-flex-fill'></div>
+                  <div><span class='glyphicon glyphicon-chevron-right hui-color-lightgrey'></span></div>
+                </footer>
+              </section>
+            </a>
           </#list>
-          </section>
+          </div>
         <#include "./pagination.ftl">
         </div>
       </div>
