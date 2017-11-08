@@ -35,12 +35,7 @@
             </article>
           </#list>
           </div>
-          <nav class='pagination'>
-            <span class='page-number current'>${data.page}</span>
-            <a class='extend next' rel='next' href='/?page=${data.page+1}'>
-              <span class='glyphicon glyphicon-chevron-right'></span>
-            </a>
-          </nav>
+        <#include "./pagination.ftl">
         </div>
       </div>
     </div>
