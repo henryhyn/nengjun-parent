@@ -31,8 +31,11 @@ CREATE TABLE `poi_article` (
   ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
-INSERT INTO `poi_article` (title, summary, content) VALUES ('开始写文章啦', '', '<h2>这是我的第一篇文章!</h2>');
-INSERT INTO `poi_article` (title, summary, content) VALUES ('继续写哦', '', '<h2>这是我的第二篇文章!</h2>');
+INSERT INTO `poi_article` (title, summary, cover, md_content, content) VALUES
+  ('开始写文章啦', '摘要内容写这里', 'http://owkui4i5d.bkt.clouddn.com/FobRrHU0QI3Av7lqzkTjTwB283TV', '## 二级标题\n\n**加粗**',
+   '<h2 id=\"-\">二级标题</h2>\n<p><strong>加粗</strong></p>'),
+  ('继续写哦', '摘要展示', 'http://owkui4i5d.bkt.clouddn.com/Ft86bT7n4Yaj7IpPJBaPfwqb2VeD', '## 章节标题\n\n-	列表\n-	项目',
+   '<h2 id=\"-\">章节标题</h2>\n<ul>\n<li>列表</li>\n<li>项目</li>\n</ul>\n');
 
 DROP TABLE IF EXISTS `poi_country`;
 
