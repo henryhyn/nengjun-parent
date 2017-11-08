@@ -26,8 +26,11 @@
             <article class='post post-type-normal'>
               <header class='post-header'>
                 <h1 class='post-title'>${article.title}</h1>
+
+                <div class='post-meta'>
+                  <img src='${article.cover}'/>
+                </div>
               </header>
-              <img src='${article.cover}'/>
               <blockquote>${article.summary}</blockquote>
               <div class='post-body'>${article.content}</div>
             </article>

@@ -22,7 +22,7 @@
     <div class='main-inner'>
       <div class='content-wrap'>
         <div class='content'>
-          <div class='posts-expand'>
+          <section class='posts-expand'>
           <#list data.list as article>
             <article class='post post-type-normal'>
               <header class='post-header'>
@@ -30,11 +30,14 @@
                   <a href='/articles/${article.id}' class='post-title-link'>${article.title}</a>
                 </h1>
               </header>
-              <img src='${article.cover}'/>
-              <blockquote>${article.summary}</blockquote>
+              <div class='post-meta'>
+                <img src='${article.cover}'/>
+
+                <p>${article.summary}</p>
+              </div>
             </article>
           </#list>
-          </div>
+          </section>
         <#include "./pagination.ftl">
         </div>
       </div>
