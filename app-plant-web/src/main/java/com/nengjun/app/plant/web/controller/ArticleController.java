@@ -2,6 +2,7 @@ package com.nengjun.app.plant.web.controller;
 
 import com.nengjun.app.content.dao.entity.PoiArticle;
 import com.nengjun.app.content.dao.mapper.PoiArticleMapper;
+import com.nengjun.avatar.face.exception.HexException;
 import com.nengjun.avatar.face.type.PageModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,8 +28,9 @@ public class ArticleController {
             @RequestParam(value = "pageSize", required = false, defaultValue = "20") Integer pageSize
     ) {
         PageModel<PoiArticle> articlePageModel = new PageModel<>();
+        articlePageModel.addCondition("status=?", 1);
         articlePageModel.setPageAndPageSize(page, pageSize);
-        articlePageModel.setOrders("update_time desc");
+        articlePageModel.setOrders("publish_time.desc");
         List<PoiArticle> articleList = poiArticleMapper.selectByPage(articlePageModel);
         for (PoiArticle article : articleList) {
             article.setContent(null);
@@ -40,8 +42,15 @@ public class ArticleController {
     }
 
     @GetMapping("/articles/{id}")
-    public String show(Model model, @PathVariable("id") Integer id) {
+    public String show(
+            Model model,
+            @PathVariable("id") Integer id,
+            @RequestParam(value = "validate", required = false, defaultValue = "true") Boolean validate
+    ) {
         PoiArticle article = poiArticleMapper.selectByPrimaryKey(id);
+        if (validate && 1 != article.getStatus()) {
+            throw new HexException(-1, "资源不存在");
+        }
         model.addAttribute("article", article);
         return "article/show";
     }

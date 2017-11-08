@@ -2,6 +2,7 @@ package com.nengjun.app.plant.web.controller;
 
 import com.nengjun.app.content.dao.entity.PoiArticle;
 import com.nengjun.app.content.dao.mapper.PoiArticleMapper;
+import com.nengjun.avatar.face.enums.Status;
 import com.nengjun.avatar.face.type.PageModel;
 import com.nengjun.avatar.face.type.Result;
 import com.nengjun.avatar.face.utils.ResultUtil;
@@ -11,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -29,6 +31,7 @@ public class PoiArticleController {
     ) {
         PageModel<PoiArticle> articlePageModel = new PageModel<>();
         articlePageModel.setPageAndPageSize(page, pageSize);
+        articlePageModel.setOrders("update_time.desc");
         List<PoiArticle> articleList = poiArticleMapper.selectByPage(articlePageModel);
         Validate.isEmpty("articleList", articleList);
         for (PoiArticle article : articleList) {
@@ -76,6 +79,17 @@ public class PoiArticleController {
     public Result delete(@PathVariable("id") Integer id) {
         Validate.idValid("id", id);
         return ResultUtil.success(poiArticleMapper.deleteByPrimaryKey(id));
+    }
+
+    @GetMapping("/articles/{id}/publish")
+    public Result publish(@PathVariable("id") Integer id) {
+        Validate.idValid("id", id);
+        PoiArticle article = poiArticleMapper.selectByPrimaryKey(id);
+        Validate.hasRecord("id", id, article);
+        article.setPublishTime(new Date());
+        article.setStatus(Status.ONLINE.getType());
+        poiArticleMapper.updateByPrimaryKey(article);
+        return ResultUtil.success(article);
     }
 
     private void copyProperties(PoiArticle poiArticle, PoiArticle article) {

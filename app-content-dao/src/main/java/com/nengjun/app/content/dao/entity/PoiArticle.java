@@ -20,6 +20,7 @@ public class PoiArticle {
     private String cover;
     private String mdContent;
     private String content;
+    private Date publishTime;
     private Date createTime;
     private Date updateTime;
 }

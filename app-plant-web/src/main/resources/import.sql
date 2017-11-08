@@ -15,18 +15,20 @@ INSERT INTO `poi_plant` VALUES (1, '玫瑰花', '爱情花', 'Hello');
 DROP TABLE IF EXISTS `poi_article`;
 
 CREATE TABLE `poi_article` (
-  `id`          INT(11)  NOT NULL AUTO_INCREMENT,
-  `status`      INT(11)  NOT NULL DEFAULT 0
+  `id`           INT(11)  NOT NULL AUTO_INCREMENT,
+  `status`       INT(11)  NOT NULL DEFAULT '0'
   COMMENT '状态: 0, 初始态; 1, 在线发布; -1 下线隐藏',
-  `title`       VARCHAR(512)      DEFAULT NULL,
-  `summary`     VARCHAR(255)      DEFAULT NULL,
-  `cover`       VARCHAR(255)      DEFAULT NULL,
-  `md_content`  LONGTEXT,
-  `content`     LONGTEXT,
-  `create_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `update_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `title`        VARCHAR(512)      DEFAULT NULL,
+  `summary`      VARCHAR(255)      DEFAULT NULL,
+  `cover`        VARCHAR(255)      DEFAULT NULL,
+  `md_content`   LONGTEXT,
+  `content`      LONGTEXT,
+  `publish_time` DATETIME          DEFAULT NULL,
+  `create_time`  DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_time`  DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  KEY `idx_on_update_time` (`update_time`)
+  KEY `idx_on_update_time` (`update_time`),
+  KEY `idx_on_publish_time` (`publish_time`)
 )
   ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
