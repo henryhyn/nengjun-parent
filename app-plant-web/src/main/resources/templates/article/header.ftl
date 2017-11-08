@@ -11,8 +11,15 @@
         </div>
         <p class='site-subtitle'>问渠那得清如许？为有源头活水来。</p>
       </div>
+      <div class='site-nav-toggle'>
+        <button id='site-nav-btn'>
+          <span class='btn-bar'></span>
+          <span class='btn-bar'></span>
+          <span class='btn-bar'></span>
+        </button>
+      </div>
     </div>
-    <nav class='site-nav'>
+    <nav id='site-nav-menu' class='site-nav'>
       <ul class='menu'>
         <li class='menu-item menu-item-home'>
           <a href='/'>
@@ -23,3 +30,16 @@
     </nav>
   </div>
 </header>
+
+<script type='text/javascript'>
+  document.getElementById('site-nav-btn').onclick = function () {
+    var el = document.getElementById('site-nav-menu');
+    if ('block' === el.style.display) {
+      el.className = 'site-nav';
+      el.style.display = 'none';
+    } else {
+      el.className = 'site-nav site-nav-on';
+      el.style.display = 'block';
+    }
+  };
+</script>
