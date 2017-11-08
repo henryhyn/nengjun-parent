@@ -28,6 +28,7 @@ public class ArticleController {
     ) {
         PageModel<PoiArticle> articlePageModel = new PageModel<>();
         articlePageModel.setPageAndPageSize(page, pageSize);
+        articlePageModel.setOrders("update_time desc");
         List<PoiArticle> articleList = poiArticleMapper.selectByPage(articlePageModel);
         for (PoiArticle article : articleList) {
             article.setContent(null);

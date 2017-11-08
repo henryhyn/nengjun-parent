@@ -2,6 +2,8 @@ package com.nengjun.app.plant.web.controller;
 
 import com.nengjun.avatar.face.enums.Status;
 import com.nengjun.avatar.face.type.PageModel;
+import com.nengjun.avatar.face.type.Result;
+import com.nengjun.avatar.face.utils.ResultUtil;
 import com.nengjun.poi.rss.dao.entity.PoiRssArticle;
 import com.nengjun.poi.rss.dao.entity.PoiRssProfile;
 import com.nengjun.poi.rss.dao.mapper.PoiRssArticleMapper;
@@ -27,7 +29,7 @@ public class PoiRssArticleController {
     private PoiRssProfileMapper poiRssProfileMapper;
 
     @RequestMapping(value = "/rssArticles", method = RequestMethod.GET)
-    public PageModel<PoiRssArticle> _index(
+    public Result _index(
             @RequestParam(value = "status", required = false, defaultValue = "10") Integer status,
             @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
             @RequestParam(value = "pageSize", required = false, defaultValue = "20") Integer pageSize
@@ -40,21 +42,21 @@ public class PoiRssArticleController {
         pageModel.setOrders("id.desc");
         List<PoiRssArticle> poiRssArticleList = poiRssArticleMapper.selectByPage(pageModel);
         pageModel.setList(poiRssArticleList);
-        return pageModel;
+        return ResultUtil.success(pageModel);
     }
 
     @RequestMapping(value = "/rssArticles/{id}", method = RequestMethod.GET)
-    public Article show(@PathVariable("id") Integer id) {
+    public Result show(@PathVariable("id") Integer id) {
         Article article = new Article();
         PoiRssArticle poiRssArticle = poiRssArticleMapper.selectByPrimaryKey(id);
         article.setPoiRssArticle(poiRssArticle);
         if (poiRssArticle == null) {
-            return article;
+            return ResultUtil.success(article);
         }
 
         PoiRssProfile poiRssProfile = poiRssProfileMapper.selectByPrimaryKey(poiRssArticle.getProfileId());
         article.setPoiRssProfile(poiRssProfile);
-        return article;
+        return ResultUtil.success(article);
     }
 
     @RequestMapping(value = "/rssArticles/{id}", method = RequestMethod.DELETE)

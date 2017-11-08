@@ -49,7 +49,7 @@ public class ServletContextListenerConfig {
                     mapperHelper.processConfiguration(sqlSessionFactory.getConfiguration());
                     sqlSessionFactory.getConfiguration().addInterceptor(interceptor);
                 }
-                taskScheduler.scheduleAtFixedRate(rssArticleTask::start, 12 * 60 * 60 * 1000L);
+                taskScheduler.scheduleAtFixedRate(rssArticleTask::start, 4 * 60 * 60 * 1000L);
             }
 
             @Override
