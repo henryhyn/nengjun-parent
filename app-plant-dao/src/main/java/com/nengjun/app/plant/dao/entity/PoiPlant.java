@@ -13,8 +13,8 @@ import java.io.Serializable;
 public class PoiPlant implements Serializable {
     private static final long serialVersionUID = -354255909978410198L;
     private Integer id;
-    @NotBlank(message = "名称 name 不能为空")
-    @Length(min = 1, max = 32, message = "名称 name 的长度只能在 1~32 之间")
+    @NotBlank(message = "植物名称不能为空")
+    @Length(min = 1, max = 32, message = "植物名称的长度只能在 1~32 之间")
     private String name;
 
     private String altName;

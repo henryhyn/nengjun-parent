@@ -30,7 +30,6 @@ public class PoiPlantController {
         PageModel<PoiPlant> plantPageModel = new PageModel<>();
         plantPageModel.setPageAndPageSize(page, pageSize);
         List<PoiPlant> plantList = poiPlantMapper.selectByPage(plantPageModel);
-        Validate.isEmpty("plantList", plantList);
         plantPageModel.setList(plantList);
         return ResultUtil.success(plantPageModel);
     }

@@ -39,7 +39,7 @@ public class PoiRssArticleController {
         PageModel<PoiRssArticle> pageModel = new PageModel<>();
         pageModel.addCondition("status=?", status);
         pageModel.setPageAndPageSize(page, pageSize);
-        pageModel.setOrders("id.desc");
+        pageModel.setOrders("update_time.desc");
         List<PoiRssArticle> poiRssArticleList = poiRssArticleMapper.selectByPage(pageModel);
         pageModel.setList(poiRssArticleList);
         return ResultUtil.success(pageModel);
