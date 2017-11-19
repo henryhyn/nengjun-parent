@@ -29,6 +29,6 @@ public class WxSession {
     }
 
     public Long getExpiresTime() {
-        return new Date().getTime() + expires_in * 1000;
+        return System.currentTimeMillis() + expires_in * 1000;
     }
 }

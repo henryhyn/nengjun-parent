@@ -15,10 +15,12 @@ public abstract class AbstractTask implements Task {
     @Getter
     private String[] args;
 
+    @Override
     public String getTaskName() {
         return getClass().getSimpleName();
     }
 
+    @Override
     public void start() {
         log.info(String.format("Begin to run %s at %s", getTaskName(), new Date()));
         run();

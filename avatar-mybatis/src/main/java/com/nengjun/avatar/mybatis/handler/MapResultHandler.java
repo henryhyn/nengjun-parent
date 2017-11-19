@@ -16,6 +16,7 @@ public class MapResultHandler<K, V> implements ResultHandler<Map<K, V>> {
         mappedResults = new HashMap<K, V>();
     }
 
+    @Override
     public void handleResult(ResultContext<? extends Map<K, V>> context) {
         Map<K, V> map = context.getResultObject();
         mappedResults.put((K) map.get("key"), map.get("value"));
